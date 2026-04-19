@@ -24,7 +24,19 @@ public class EventStack
         UnityEngine.Debug.Log($"[事件栈] 出栈  → 总数：{_stack.Count}");
         return evt;
     }
-
+    // ✅ 加上这个方法，就能用 FindEvent<T> 了
+    public T FindEvent<T>() where T : class, IBaseEvent
+    {
+        // 遍历栈中所有事件，找到匹配的类型
+        foreach (var evt in _stack)
+        {
+            if (evt is T matchEvent)
+            {
+                return matchEvent;
+            }
+        }
+        return null;
+    }
     public IBaseEvent GetCurrentEvent() => _stack.Count > 0 ? _stack.Peek() : null;
     public IBaseEvent GetLastEvent() => _lastEvent;
 }

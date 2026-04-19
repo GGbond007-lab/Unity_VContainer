@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class YourEvent1MsgHandler : IEventMsgHandler
 {
-    public string EventName => "YourEvent1"; // 和SO里的 eventName 一致
+    public string EventName => "YourEvent123"; // 和SO里的 eventName 一致
 
     private readonly Func<Type, IBaseEvent> _eventFactory;
     private readonly IEventBus _eventBus;
@@ -34,16 +34,24 @@ public class YourEvent1MsgHandler : IEventMsgHandler
         // -------------------------------------------------------------------------
         // 下面是：【第一次进入】或【切换事件】→ 正常创建新事件
         // -------------------------------------------------------------------------
-        var newEvent = _eventFactory(typeof(YourEvent1)) as YourEvent1;
-        if (newEvent == null)
+        // 创建事件实例（工厂内部会把事件入栈并调用 Initialize）
+        var created = _eventFactory(typeof(YourEvent1));
+        if (created == null)
+        {
+            Debug.LogError("事件工厂返回 null，无法创建 YourEvent1");
             return;
+        }
+
+        var newEvent = created as YourEvent1;
+        if (newEvent == null)
+        {
+            Debug.LogError($"事件工厂创建的实例不能转换为 YourEvent1，实际类型：{created.GetType().Name}");
+            return;
+        }
 
         // 绑定配置
         var config = EventConfigProvider.GetConfig(EventName);
         newEvent.SetConfig(config);
-
-        // 入栈
-        //_eventStack.Push(newEvent);
 
         // 发布事件
         _eventBus.Publish(newEvent);

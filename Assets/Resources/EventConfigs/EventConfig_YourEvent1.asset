@@ -10,10 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ddb2d5a0f351e5443bef936e48316147, type: 3}
-  m_Name: EventConfig_YoueEvent2
+  m_Name: EventConfig_YourEvent1
   m_EditorClassIdentifier: Assembly-CSharp::EventConfigSO
-  eventName: YourEvent2
-  bindings:
-  - webSendToUnityFuncName: "\u6253\u5370"
-    unityFuncName: Print
-    enable: 0
+  eventName: YourEvent123
+  targetEventScript: {fileID: 11500000, guid: 6ea652ae35bfe0e408ea366655859d4f, type: 3}
+  methodBinds:
+  - enable: 1
+    webFuncName: GetLabel
+    unityFuncName: SpawnLabelList
+    callBackEnable: 1
+    callBackFuncName: OnCallBackSpawnLabelList

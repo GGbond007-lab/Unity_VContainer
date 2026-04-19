@@ -11,7 +11,7 @@ public class RootLifetimeScope : LifetimeScope
         builder.Register<JsonSerializer>(Lifetime.Singleton);
 
         // 通信层 
-        builder.Register<IWebBridge, WebBridge>(Lifetime.Singleton);
+        //builder.Register<IWebBridge, WebBridge>(Lifetime.Singleton);
 
         // 全局管理器
         builder.Register<ISceneLoadManager, SceneLoadManager>(Lifetime.Singleton);

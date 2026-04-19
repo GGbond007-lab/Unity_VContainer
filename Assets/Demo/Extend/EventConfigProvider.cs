@@ -16,7 +16,6 @@ public static class EventConfigProvider
     {
         _configDict = new Dictionary<string, EventConfigSO>();
 
-        // 👇 自动搜索项目中所有 EventConfigSO
         var configs = Resources.LoadAll<EventConfigSO>("EventConfigs");
         foreach (var c in configs)
         {

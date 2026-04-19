@@ -4,15 +4,23 @@ using UnityEngine;
 public class YourEvent1 : BaseEvent
 {
     private readonly ILabelManager _labelManager;
-    private readonly IEventLabelController _injectedLabelController;
+    private readonly IEventLabelController _labelController;
 
     // 注入 LabelManager 和事件专属的 LabelController（由 VContainer 提供）
     public YourEvent1(ILabelManager labelManager, YourEvent1LabelController labelController)
     {
         _labelManager = labelManager;
-        _injectedLabelController = labelController;
+        _labelController = labelController;
     }
+    // 🔥 只有消息触发事件时，才初始化 UI
+    public override void OnInitialize()
+    {
+        base.OnInitialize();
 
+        // ✅ 这里才创建 LabelController 的 GameObject
+        _labelController.Initialize();
+        LabelCtrl = _labelController;
+    }
     public async void SpawnLabelList(object data)
     {
         if (data is not List<LabelData> dataList)
@@ -58,6 +66,7 @@ public class YourEvent1 : BaseEvent
     public void Print1()
     {
         Debug.Log($"【YourEvent1：Print1】:{EventId}");
+        
     }
     public void ShowData(object data)
     {
@@ -71,6 +80,11 @@ public class YourEvent1 : BaseEvent
     // 在 VContainer 注入完成后，基类会调用此方法，替换默认的 LabelCtrl
     protected override void RegisterLabelController()
     {
-        LabelCtrl = _injectedLabelController;
+        LabelCtrl = _labelController;
+    }
+
+    public void OnCallBackSpawnLabelList() 
+    {
+        Debug.Log("OnCallBackSpawnLabelList回调方法被调用了！");
     }
 }

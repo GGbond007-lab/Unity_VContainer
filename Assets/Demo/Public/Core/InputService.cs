@@ -50,15 +50,18 @@ public class InputService : IInputService, ITickable
     {
         _msgManager = msgManager;
         this.eventStack = eventStack;
+        Debug.Log("[InputService] constructed");
     }
     public void Tick() => CheckInput();
 
     public void CheckInput()
     {
+        // debug
+        // Debug.Log("[InputService] Tick");
         if (Input.GetKeyDown(KeyCode.Alpha1))//新建事件YoueEvent1，同时新建对应事件和对应方法
         {
             _msgManager.Receive(
-               eventName: "YourEvent1",
+               eventName: "YourEvent123",
                funcName: "GetLabel",
                data: testData1
            );
@@ -74,7 +77,7 @@ public class InputService : IInputService, ITickable
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             _msgManager.Receive(
-               eventName: "YourEvent1",
+               eventName: "YourEvent123",
                funcName: "GetLabel",
                data: testData2
            );

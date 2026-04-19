@@ -2,12 +2,12 @@
 
 public class SceneLoadManager : ISceneLoadManager
 {
-    private readonly IWebBridge _webBridge;
+    //private readonly IWebBridge _webBridge;
     private readonly JsonSerializer _jsonSerializer;
 
-    public SceneLoadManager(IWebBridge webBridge, JsonSerializer jsonSerializer)
+    public SceneLoadManager( JsonSerializer jsonSerializer)
     {
-        _webBridge = webBridge;
+        //_webBridge = webBridge;
         _jsonSerializer = jsonSerializer;
     }
 
@@ -26,8 +26,8 @@ public class SceneLoadManager : ISceneLoadManager
             status = "loaded"
         };
         string json = _jsonSerializer.ToJson(callbackData);
-        _webBridge.SendMessageToWeb(json);
+        //_webBridge.SendMessageToWeb(json);
 
-        UnityEngine.Debug.Log($"[SceneLoadManager] 加载完成：{sceneName}，已通知前端 ");
+        //UnityEngine.Debug.Log($"[SceneLoadManager] 加载完成：{sceneName}，已通知前端 ");
     }
 }

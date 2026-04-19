@@ -1,5 +1,6 @@
 ﻿public interface IEventLabelController
 {
+    void Initialize();
     void AddLabel(LabelItem label);
     // 新增：根据唯一ID查找标签
     LabelItem TryGetLabel(string targetId);
