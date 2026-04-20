@@ -6,135 +6,239 @@ using VContainer;
 
 public abstract class BaseEvent : IBaseEvent
 {
-    // 事件ID
     public string EventId { get; protected set; }
 
-    #region 注入依赖
-    // 标签控制器（子类可自由替换！）
-    public IEventLabelController LabelCtrl { get; protected set; }
-
-    // 注入全局标签管理器
+    [Inject] protected IEventBus EventBus { get; private set; }
     [Inject] protected ILabelManager LabelManager { get; private set; }
 
-    // 方法映射表：存放 前端 funcName -> 可执行方法 的映射
-    private readonly Dictionary<string, Action<object>> _methodMap = new();
-    #endregion
+    protected EventConfigSO Config { get; private set; }
 
-    // 构造函数 → 保留
+    public IEventLabelController LabelCtrl { get; protected set; }
+
+    private readonly Dictionary<string, (string realMethodName, Action<object> action)> _methodMap = new();
+    private List<IDisposable> _subscribeDisposables = new List<IDisposable>();
+
+    private bool _initialized;
+
     protected BaseEvent()
     {
         EventId = Guid.NewGuid().ToString("N");
     }
 
-    /// <summary>
-    /// 根据接收到的参数执行方法
-    /// </summary>
-    public virtual void OnExecute(string funcKey, object data)
+    public virtual void OnExecute(string webFuncName, object data)
     {
-        if (_methodMap.TryGetValue(funcKey, out var action))
-            action.Invoke(data);
+        Debug.Log($"【🟢 调用】OnExecute: webFuncName = {webFuncName}");
+
+        if (_methodMap.TryGetValue(webFuncName, out var entry))
+        {
+            Debug.Log($"【🟢 找到映射】执行本地方法: {entry.realMethodName}");
+            entry.action.Invoke(data);
+
+            var msg = new EventMethodExecutedMessage(this, entry.realMethodName, data);
+            Debug.Log($"【📤 发布消息】事件: {this.GetType().Name}  方法: {entry.realMethodName}");
+            EventBus.Publish(msg);
+        }
+        else
+        {
+            Debug.LogError($"【🔴 失败】找不到 webFuncName: {webFuncName}");
+        }
     }
 
-    public virtual void OnInitialize() { }
+    //public void InvokeMethod(string methodName, object data = null)
+    //{
+    //    Debug.Log($"【🟢 手动调用】方法: {methodName}");
 
-    public virtual void OnDestroy()
-    {
-        LabelCtrl?.ClearAll();
-        LabelCtrl?.Destroy();
-        LabelCtrl = null;
-    }
+    //    var method = GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+    //    if (method == null)
+    //    {
+    //        Debug.LogError($"【🔴 失败】找不到方法: {methodName}");
+    //        return;
+    //    }
 
-    #region 根据配置绑定方法（使用 UnityEvent 可视化绑定，完美版）
-    private EventConfigSO _config;
+    //    if (method.GetParameters().Length == 0)
+    //        method.Invoke(this, null);
+    //    else
+    //        method.Invoke(this, new[] { data });
+
+    //    var msg = new EventMethodExecutedMessage(this, methodName, data);
+    //    Debug.Log($"【📤 发布消息】事件: {this.GetType().Name}  方法: {methodName}");
+    //    EventBus.Publish(msg);
+    //}
 
     [Inject]
     private void InitializeAfterInject()
     {
+        if (_initialized) return;
+        _initialized = true;
+
+        Type selfType = GetType();
+
+        // 🔥🔥🔥 关键：按 targetEventScript 绑定的脚本匹配配置
+        Config = EventConfigProvider.GetConfigByTargetScript(selfType);
+
+        if (Config == null)
+        {
+            Debug.LogError($"【🔴 错误】{selfType.Name} 没有找到绑定的配置！请检查 SO 的 targetEventScript");
+            return;
+        }
+
+        Debug.Log($"【✅ 成功】{selfType.Name} 找到自己的配置：{Config.name}");
+
+        BuildMethodBindingsFromConfig();
+        AutoSubscribeFromConfig();
         RegisterLabelController();
     }
 
-    protected virtual void RegisterLabelController()
+    private void AutoSubscribeFromConfig()
     {
-        LabelCtrl = null;
+        if (Config == null) return;
+        if (Config.subscribeBinds == null || Config.subscribeBinds.Count == 0) return;
+
+        foreach (var sub in Config.subscribeBinds)
+        {
+            if (string.IsNullOrEmpty(sub.targetEventClassName)
+             || string.IsNullOrEmpty(sub.methodNameInTargetEvent)
+             || string.IsNullOrEmpty(sub.localMethodName)) continue;
+
+            Type targetEventType = FindEventType(sub.targetEventClassName);
+            if (targetEventType == null) continue;
+
+            MethodInfo localMethod = GetType().GetMethod(sub.localMethodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if (localMethod == null) continue;
+
+            Debug.Log($"【✅ 订阅成功】监听: {targetEventType.Name}.{sub.methodNameInTargetEvent} → 执行: {sub.localMethodName}");
+
+            var disposable = EventBus.Subscribe<EventMethodExecutedMessage>(msg =>
+            {
+                bool matchEvent = msg.Event.GetType() == targetEventType;
+                bool matchMethod = msg.MethodName == sub.methodNameInTargetEvent;
+
+                if (matchEvent && matchMethod)
+                {
+                    Debug.Log($"【🔥 触发】{targetEventType.Name}.{msg.MethodName} → 执行 {sub.localMethodName}");
+
+                    // ==============================
+                    // 🔥 🔥 🔥 核心修复：智能参数传递
+                    // ==============================
+                    var parameters = localMethod.GetParameters();
+
+                    if (parameters.Length == 0)
+                    {
+                        // 无参数 → 不传
+                        localMethod.Invoke(this, null);
+                    }
+                    else
+                    {
+                        var paramType = parameters[0].ParameterType;
+                        object arg = null;
+
+                        // 如果参数是事件类型 → 传事件本身
+                        if (typeof(IBaseEvent).IsAssignableFrom(paramType))
+                        {
+                            arg = msg.Event;
+                        }
+                        // 否则 → 传数据
+                        else
+                        {
+                            arg = msg.Data;
+                        }
+
+                        try
+                        {
+                            localMethod.Invoke(this, new[] { arg });
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.LogError($"【调用失败】{sub.localMethodName} 参数不匹配\n期望：{paramType}\n传入：{arg?.GetType()}\n{e}");
+                        }
+                    }
+                }
+            });
+
+            _subscribeDisposables.Add(disposable);
+        }
     }
 
-    public void SetConfig(EventConfigSO config)
+    private Type FindEventType(string name)
     {
-        _config = config;
-        BuildMethodBindingsFromConfig();
+        foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (var t in asm.GetTypes())
+                if (t.Name == name && typeof(IBaseEvent).IsAssignableFrom(t))
+                    return t;
+        return null;
     }
 
     private void BuildMethodBindingsFromConfig()
     {
-        if (_config == null) return;
-        _methodMap.Clear();
+        if (Config == null) return;
 
+        _methodMap.Clear();
         var type = GetType();
 
-        // 处理普通方法绑定，支持无参方法和单 object 参数方法
-        foreach (var binding in _config.methodBinds)
+        foreach (var b in Config.methodBinds)
         {
-            if (binding == null || !binding.enable || string.IsNullOrEmpty(binding.webFuncName) || string.IsNullOrEmpty(binding.unityFuncName))
-                continue;
+            if (!b.enable || string.IsNullOrEmpty(b.webFuncName) || string.IsNullOrEmpty(b.unityFuncName)) continue;
 
-            var mapKey = binding.webFuncName;
-            var method = type.GetMethod(binding.unityFuncName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            if (method == null)
-            {
-                Debug.LogError($"找不到方法：{binding.unityFuncName} 在 {type.Name}");
-                continue;
-            }
+            var method = type.GetMethod(b.unityFuncName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if (method == null) continue;
 
-            var pars = method.GetParameters();
             Action<object> action = null;
-            if (pars.Length == 0)
-            {
-                action = data => method.Invoke(this, null);
-            }
-            else if (pars.Length == 1 && pars[0].ParameterType == typeof(object))
-            {
-                action = data => method.Invoke(this, new[] { data });
-            }
-            else
-            {
-                Debug.LogError($"方法签名不匹配（需要 void Method() 或 void Method(object)）：{binding.unityFuncName} 在 {type.Name}");
-                continue;
-            }
+            var ps = method.GetParameters();
+            if (ps.Length == 0)
+                action = d => method.Invoke(this, null);
+            else if (ps.Length == 1 && ps[0].ParameterType == typeof(object))
+                action = d => method.Invoke(this, new[] { d });
+            else continue;
 
-            // 包裹回调执行：如果启用了回调，会在方法执行完成后调用 callBackFuncName
-            if (binding.callBackEnable && !string.IsNullOrEmpty(binding.callBackFuncName))
+            if (!string.IsNullOrEmpty(b.callBackFuncName))
             {
-                var callbackName = binding.callBackFuncName;
-                var original = action;
-                action = data =>
+                var cbName = b.callBackFuncName;
+                var origin = action;
+                action = d =>
                 {
-                    original.Invoke(data);
-                    // 调用回调
-                    var cbMethod = type.GetMethod(callbackName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                    if (cbMethod == null)
-                    {
-                        Debug.LogError($"找不到回调方法：{callbackName} 在 {type.Name}");
-                        return;
-                    }
-
-                    var cbPars = cbMethod.GetParameters();
-                    if (cbPars.Length == 0)
-                    {
-                        cbMethod.Invoke(this, null);
-                    }
-                    else if (cbPars.Length == 1 && cbPars[0].ParameterType == typeof(object))
-                    {
-                        cbMethod.Invoke(this, new[] { data });
-                    }
-                    else
-                    {
-                        Debug.LogError($"回调方法签名不匹配（需要 void Method() 或 void Method(object)）：{callbackName} 在 {type.Name}");
-                    }
+                    origin.Invoke(d);
+                    var cb = type.GetMethod(cbName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                    if (cb == null) return;
+                    if (cb.GetParameters().Length == 0) cb.Invoke(this, null);
+                    else if (cb.GetParameters().Length == 1) cb.Invoke(this, new[] { d });
                 };
             }
 
-            _methodMap[mapKey] = action;
+            _methodMap[b.webFuncName] = (b.unityFuncName, action);
+            Debug.Log($"【✅ 方法绑定】{b.webFuncName} → {b.unityFuncName}");
         }
     }
-    #endregion
+
+    protected virtual void RegisterLabelController() { }
+
+    public virtual void OnDestroy()
+    {
+        foreach (var d in _subscribeDisposables) d?.Dispose();
+        _subscribeDisposables.Clear();
+
+        if (LabelCtrl != null)
+        {
+            LabelCtrl.ClearAll();
+            LabelCtrl.Destroy();
+            LabelCtrl = null;
+        }
+    }
+
+    // 废弃
+    //public void SetConfig(EventConfigSO config) { }
+    public void OnInitialize() { }
+}
+
+public class EventMethodExecutedMessage
+{
+    public IBaseEvent Event { get; }
+    public string MethodName { get; }
+    public object Data { get; }
+
+    public EventMethodExecutedMessage(IBaseEvent evt, string methodName, object data)
+    {
+        Event = evt;
+        MethodName = methodName;
+        Data = data;
+    }
 }

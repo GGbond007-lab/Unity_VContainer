@@ -1,24 +1,50 @@
+﻿using System;
+using System.Collections.Generic;
+
 public class EventBus : IEventBus
 {
-    private readonly System.Collections.Generic.Dictionary<System.Type, System.Delegate> _dic = new();
+    private readonly Dictionary<Type, Delegate> _dic = new();
 
-    public void Publish<T>(T evt) where T : IBaseEvent
+    public void Publish<T>(T message)
     {
-        System.Type type = typeof(T);
+        Type type = typeof(T);
         if (_dic.TryGetValue(type, out var del))
-            (del as System.Action<T>)?.Invoke(evt);
+            (del as Action<T>)?.Invoke(message);
     }
 
-    public void Subscribe<T>(System.Action<T> callback) where T : IBaseEvent
+    public IDisposable Subscribe<T>(Action<T> callback)
     {
-        System.Type type = typeof(T);
-        if (!_dic.ContainsKey(type)) _dic[type] = callback;
-        else _dic[type] = System.Delegate.Combine(_dic[type], callback);
+        Type type = typeof(T);
+        if (!_dic.ContainsKey(type))
+            _dic[type] = callback;
+        else
+            _dic[type] = Delegate.Combine(_dic[type], callback);
+
+        return new UnsubscribeDelegate<T>(this, callback);
     }
 
-    public void UnSubscribe<T>(System.Action<T> callback) where T : IBaseEvent
+    public void UnSubscribe<T>(Action<T> callback)
     {
-        System.Type type = typeof(T);
-        if (_dic.ContainsKey(type)) _dic[type] = System.Delegate.Remove(_dic[type], callback);
+        Type type = typeof(T);
+        if (_dic.ContainsKey(type))
+            _dic[type] = Delegate.Remove(_dic[type], callback);
+    }
+}
+
+// 自动取消订阅
+public class UnsubscribeDelegate<T> : IDisposable
+{
+    private IEventBus _bus;
+    private Action<T> _callback;
+
+    public UnsubscribeDelegate(IEventBus bus, Action<T> callback)
+    {
+        _bus = bus;
+        _callback = callback;
+    }
+
+    public void Dispose()
+    {
+        _bus?.UnSubscribe(_callback);
     }
 }

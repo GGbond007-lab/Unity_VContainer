@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,10 +16,8 @@ public class EventConfigSO : ScriptableObject
     [Header("方法绑定")]
     public List<EventMethodBind> methodBinds = new();
 
-    //[Header("回调设置")]
-    //public bool needCallback;
-    //public string callbackFuncName;
-    //public string[] returnFields;
+    [Header("事件订阅")]
+    public List<EventSubscribeBind> subscribeBinds = new();
 }
 
 [Serializable]
@@ -26,7 +25,18 @@ public class EventMethodBind
 {
     public bool enable = true;
     public string webFuncName;
-    public string unityFuncName;    
+
+    [ReadOnly] public string unityFuncName;
+
     public bool callBackEnable = false;
-    public string callBackFuncName; // 存回调方法名（用于快速选择）
+
+    [ReadOnly] public string callBackFuncName;
+}
+
+[Serializable]
+public class EventSubscribeBind
+{
+    [ReadOnly] public string targetEventClassName;
+    [ReadOnly] public string methodNameInTargetEvent;
+    [ReadOnly] public string localMethodName;
 }

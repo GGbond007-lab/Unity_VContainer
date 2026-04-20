@@ -31,10 +31,6 @@ public class YourEvent1MsgHandler : IEventMsgHandler
             return;
         }
 
-        // -------------------------------------------------------------------------
-        // 下面是：【第一次进入】或【切换事件】→ 正常创建新事件
-        // -------------------------------------------------------------------------
-        // 创建事件实例（工厂内部会把事件入栈并调用 Initialize）
         var created = _eventFactory(typeof(YourEvent1));
         if (created == null)
         {
@@ -48,13 +44,6 @@ public class YourEvent1MsgHandler : IEventMsgHandler
             Debug.LogError($"事件工厂创建的实例不能转换为 YourEvent1，实际类型：{created.GetType().Name}");
             return;
         }
-
-        // 绑定配置
-        var config = EventConfigProvider.GetConfig(EventName);
-        newEvent.SetConfig(config);
-
-        // 发布事件
-        _eventBus.Publish(newEvent);
 
         // 执行方法
         if (!string.IsNullOrEmpty(funcName))

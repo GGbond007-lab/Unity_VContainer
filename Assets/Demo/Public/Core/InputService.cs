@@ -74,22 +74,9 @@ public class InputService : IInputService, ITickable
                data: "data2"
            );
         }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            _msgManager.Receive(
-               eventName: "YourEvent123",
-               funcName: "GetLabel",
-               data: testData2
-           );
-        }
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             eventStack.Pop();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-
         }
     }
 

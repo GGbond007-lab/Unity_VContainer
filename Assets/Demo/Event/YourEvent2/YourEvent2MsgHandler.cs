@@ -29,12 +29,6 @@ public class YourEvent2MsgHandler: IEventMsgHandler
         if (evt == null)
             return;
 
-        var config = EventConfigProvider.GetConfig(EventName);
-        evt.SetConfig(config);
-
-        // 3. 发布事件/订阅事件
-        //_eventBus.Publish(evt);
-        
         // 4. 有方法名就执行（不管是不是本次新建的事件）
         if (!string.IsNullOrEmpty(funcName))
         {

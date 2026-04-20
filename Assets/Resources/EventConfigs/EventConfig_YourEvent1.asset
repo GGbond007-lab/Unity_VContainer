@@ -20,3 +20,4 @@ MonoBehaviour:
     unityFuncName: SpawnLabelList
     callBackEnable: 1
     callBackFuncName: OnCallBackSpawnLabelList
+  subscribeBinds: []

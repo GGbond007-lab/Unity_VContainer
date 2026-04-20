@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: EventConfig_YourEvent2
   m_EditorClassIdentifier: Assembly-CSharp::EventConfigSO
   eventName: YourEvent2
-  targetEventScript: {fileID: 0}
+  targetEventScript: {fileID: 11500000, guid: d62924cd2f8976246bd30de61289b4e0, type: 3}
   methodBinds: []
-  needCallback: 0
-  callbackFuncName: 
-  returnFields: []
+  subscribeBinds:
+  - targetEventClassName: YourEvent1
+    methodNameInTargetEvent: SpawnLabelList
+    localMethodName: Print

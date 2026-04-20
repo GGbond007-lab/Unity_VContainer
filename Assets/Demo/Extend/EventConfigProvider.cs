@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public static class EventConfigProvider
@@ -29,5 +30,17 @@ public static class EventConfigProvider
         AllConfigs();
         _configDict.TryGetValue(eventName, out var config);
         return config;
+    }
+    // 🔥 按 targetEventScript 绑定的类类型查找配置
+    public static EventConfigSO GetConfigByTargetScript(Type targetType)
+    {
+        foreach (var config in AllConfigs().Values)
+        {
+            if (config.targetEventScript != null && config.targetEventScript.GetClass() == targetType)
+            {
+                return config;
+            }
+        }
+        return null;
     }
 }
