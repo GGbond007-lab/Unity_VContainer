@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class LabelItem : MonoBehaviour, ILabelItem
+public class LabelItem : MonoBehaviour, ILabel
 {
-    
+    private string _identifyID;
     [Header("基础组件")]
     public Button actionButton;
     public Text title;
@@ -11,12 +12,19 @@ public class LabelItem : MonoBehaviour, ILabelItem
     protected object _data;
     public LabelData _typedData;
     private System.Action _onClick;
+    public GameObject SourcePrefab;// 用来记录这个标签是从哪个 Prefab 实例化的，释放时回对应池
 
+    public string identifyID => _identifyID;
+
+    public void Awake()
+    {
+        SourcePrefab = this.gameObject;
+    }
     public virtual void SetData(object data)
     {
         _data = data;
         _typedData = data as LabelData;
-
+        _identifyID = _typedData.identifyID;
         UpdateUI();
     }
 
@@ -26,13 +34,6 @@ public class LabelItem : MonoBehaviour, ILabelItem
         _data = data;
         _typedData = data;
         UpdateUI();
-    }
-
-    public void SetClickEvent(System.Action onClick)
-    {
-        _onClick = onClick;
-        actionButton.onClick.RemoveAllListeners();
-        actionButton.onClick.AddListener(() => _onClick?.Invoke());
     }
 
     public virtual void Refresh() { UpdateUI(); }
@@ -53,4 +54,12 @@ public class LabelItem : MonoBehaviour, ILabelItem
     {
         _onClick = null;
     }
+
+    public void SetClickEvent(Action onClick)
+    {
+        _onClick = onClick;
+        actionButton.onClick.RemoveAllListeners();
+        actionButton.onClick.AddListener(() => _onClick?.Invoke());
+    }
+
 }

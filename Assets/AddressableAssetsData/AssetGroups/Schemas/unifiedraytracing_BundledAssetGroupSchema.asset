@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5d17a21594effb4e9591490b009e7aa, type: 3}
   m_Name: unifiedraytracing_BundledAssetGroupSchema
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.GroupSchemas.BundledAssetGroupSchema
-  m_Group: {fileID: 11400000, guid: 09909e663e122b541bc90374fa5165c3, type: 2}
+  m_Group: {fileID: 11400000, guid: 04935e072d682ba4abc376059d0f8a2c, type: 2}
   m_InternalBundleIdMode: 1
   m_Compression: 1
   m_IncludeAddressInCatalog: 1
@@ -35,9 +35,9 @@ MonoBehaviour:
   m_RedirectLimit: -1
   m_RetryCount: 0
   m_BuildPath:
-    m_Id: 3ad63ef02fdf4264c8835c263818d395
+    m_Id: 8d9048fbda1cd7e4ab22453ee4b24938
   m_LoadPath:
-    m_Id: e626d0fb330ae244d94967b17b2cb14d
+    m_Id: 359df74d5e8abdb41ada1e3ce106b9b3
   m_BundleMode: 0
   m_AssetBundleProviderType:
     m_AssemblyName: Unity.ResourceManager, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null

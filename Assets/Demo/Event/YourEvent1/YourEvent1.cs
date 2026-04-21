@@ -35,7 +35,8 @@ public class YourEvent1 : BaseEvent
 
         foreach (var itemData in dataList)
         {
-            var existLabel = LabelCtrl.TryGetLabel(itemData.deviceName);
+            // 🔥 用 identifyID 查找
+            var existLabel = LabelCtrl.TryGetLabel(itemData.identifyID);
             if (existLabel != null)
             {
                 existLabel.SetData(itemData);
@@ -44,18 +45,10 @@ public class YourEvent1 : BaseEvent
             }
 
             var prefab = await _labelManager.LoadLabelPrefab(itemData.prefabKey);
-            var labelUi = _labelManager.CreateLabel(prefab);
+            var newLabel = _labelManager.CreateLabel(prefab, LabelCtrl.RootTransform);
 
-            LabelCtrl.AddLabel(labelUi);
-            var labelItem = labelUi.GetComponent<LabelItem>();
-
-            labelItem.SetData(itemData);
-
-            labelItem.SetClickEvent(() =>
-            {
-                var currentData = labelItem._typedData;
-                Debug.Log($"点击标签 → ID：{currentData.deviceName}:{currentData.title} 事件：{EventId}");
-            });
+            newLabel.SetData(itemData);
+            LabelCtrl.AddLabel(newLabel);
         }
     }
 

@@ -10,19 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Packed Assets
+  m_Name: Default Local Group
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
-  m_GroupName: Packed Assets
-  m_GUID: 15bcc97f523539845bcbaa24d79f0848
+  m_GroupName: Default Local Group
+  m_GUID: f4c88a10f0fd208489101d77ffe52984
   m_SerializeEntries:
-  - m_GUID: 217b7bcb3cf76b94f9befe00d1946ed2
+  - m_GUID: 7a2bf4fabbb10554ab25c55aa9489cc2
     m_Address: Lable
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cfcdb88bf62173d4581bcb62452657cb
+    m_Address: LableNew
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
-  m_Settings: {fileID: 11400000, guid: a92bcf758e7ac42408b50400ac22a383, type: 2}
+  m_Settings: {fileID: 11400000, guid: ee46b478102300248830fb17b36821c1, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 548e3854af3e19e43bb989548430e76d, type: 2}
-    - {fileID: 11400000, guid: 429d183a385e26148bab28206b3cef6a, type: 2}
+    - {fileID: 11400000, guid: 03df92fa0e8eebc49b14fbd1bc430c55, type: 2}
+    - {fileID: 11400000, guid: bc7963422609cea488bc501d17e3bfaf, type: 2}

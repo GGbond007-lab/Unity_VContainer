@@ -1,11 +1,12 @@
-﻿public interface IEventLabelController
+﻿using UnityEngine;
+
+public interface IEventLabelController
 {
+    Transform RootTransform { get; }
     void Initialize();
-    void AddLabel(LabelItem label);
-    // 新增：根据唯一ID查找标签
-    LabelItem TryGetLabel(string targetId);
+    void AddLabel(ILabel label); 
+    void RemoveLabel(ILabel label); 
     void ClearAll();
-    void RemoveLabel(LabelItem label);
-    // 销毁控制器自身（用于清理根节点等资源）
     void Destroy();
+    ILabel TryGetLabel(string identifyID); 
 }

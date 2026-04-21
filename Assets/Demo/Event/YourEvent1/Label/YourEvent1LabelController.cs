@@ -3,20 +3,23 @@ using UnityEngine;
 
 public class YourEvent1LabelController : IEventLabelController
 {
-    private readonly List<LabelItem> _labels = new();
+    private readonly List<ILabel> _labels = new();
+    private readonly ILabelManager _labelManager;
     private Transform _root;
     private GameObject _rootGameObject;
 
-    // 🔥 关键：构造函数不再自动创建 GameObject
-    public YourEvent1LabelController() { }
+    public YourEvent1LabelController(ILabelManager labelManager)
+    {
+        _labelManager = labelManager;
+    }
 
-    // 🔥 提供手动初始化方法（只有事件需要时才调用）
+    public Transform RootTransform => _root;
+
     public void Initialize()
     {
         if (_rootGameObject != null) return;
 
-        // 只有这里才会创建物体
-        var go = new GameObject("[YourEvent1LabelController]", typeof(RectTransform));
+        var go = new GameObject("[EventLabelController]", typeof(RectTransform));
         _rootGameObject = go;
         _root = go.transform;
 
@@ -25,31 +28,29 @@ public class YourEvent1LabelController : IEventLabelController
             _root.SetParent(canvas.transform, false);
     }
 
-    public void AddLabel(LabelItem label)
+    public void AddLabel(ILabel label)
     {
-        if (_root == null)
-        {
-            Debug.LogError("必须先调用 Initialize() 才能使用 LabelController");
-            return;
-        }
+        if (_root == null) Initialize();
+        if (label == null) return;
+
         _labels.Add(label);
-        label.transform.SetParent(_root, false);
+        (label as Component).transform.SetParent(_root, false);
     }
 
-    public void RemoveLabel(LabelItem label)
+    public void RemoveLabel(ILabel label)
     {
         if (_labels.Remove(label))
-            Object.Destroy(label.gameObject);
+            _labelManager.ReleaseLabel(label as Component);
     }
 
     public void ClearAll()
     {
         foreach (var label in _labels)
-            Object.Destroy(label.gameObject);
+            _labelManager.ReleaseLabel(label as Component);
+
         _labels.Clear();
     }
 
-    // 🔥 真正的销毁（释放内存）
     public void Destroy()
     {
         ClearAll();
@@ -61,14 +62,13 @@ public class YourEvent1LabelController : IEventLabelController
         }
     }
 
-    public LabelItem TryGetLabel(string deviceName)
+    // 🔥 根据 identifyID 查找标签
+    public ILabel TryGetLabel(string identifyID)
     {
-        foreach (var item in _labels)
-        {
-            var data = item._typedData;
-            if (data != null && data.deviceName == deviceName)
-                return item;
-        }
+        foreach (var label in _labels)
+            if (label.identifyID == identifyID)
+                return label;
+
         return null;
     }
 }

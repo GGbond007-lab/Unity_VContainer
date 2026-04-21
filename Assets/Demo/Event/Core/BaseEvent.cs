@@ -44,27 +44,6 @@ public abstract class BaseEvent : IBaseEvent
         }
     }
 
-    //public void InvokeMethod(string methodName, object data = null)
-    //{
-    //    Debug.Log($"【🟢 手动调用】方法: {methodName}");
-
-    //    var method = GetType().GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-    //    if (method == null)
-    //    {
-    //        Debug.LogError($"【🔴 失败】找不到方法: {methodName}");
-    //        return;
-    //    }
-
-    //    if (method.GetParameters().Length == 0)
-    //        method.Invoke(this, null);
-    //    else
-    //        method.Invoke(this, new[] { data });
-
-    //    var msg = new EventMethodExecutedMessage(this, methodName, data);
-    //    Debug.Log($"【📤 发布消息】事件: {this.GetType().Name}  方法: {methodName}");
-    //    EventBus.Publish(msg);
-    //}
-
     [Inject]
     private void InitializeAfterInject()
     {
@@ -224,8 +203,6 @@ public abstract class BaseEvent : IBaseEvent
         }
     }
 
-    // 废弃
-    //public void SetConfig(EventConfigSO config) { }
     public void OnInitialize() { }
 }
 

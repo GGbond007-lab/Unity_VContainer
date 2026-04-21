@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6569971284135060083}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbfbf39bd2bc7c846a17bc5a22f0984a, type: 3}
+  m_Script: {fileID: 11500000, guid: 5fc98e3b897981b4d8c7bb05e61c92eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RootLifetimeScope
   parentReference:

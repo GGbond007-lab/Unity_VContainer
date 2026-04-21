@@ -4,6 +4,9 @@ using UnityEngine;
 public interface ILabelManager
 {
     Task<GameObject> LoadLabelPrefab(string prefabKey);
-    LabelItem CreateLabel(GameObject prefab, Transform parent = null);
-    void ClearGlobalLabels();
+    ILabel CreateLabel(GameObject prefab, Transform parent = null);
+    void ReleaseLabel(Component label);
+    void ClearAllLabelsToPool();
+    void ClearPoolCompletely();
+    void DebugPoolStatus();
 }

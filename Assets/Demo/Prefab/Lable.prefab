@@ -369,7 +369,7 @@ GameObject:
   - component: {fileID: 6925613029650821601}
   - component: {fileID: 3849185014604650093}
   - component: {fileID: 8872064459500693861}
-  - component: {fileID: -1258479134238220945}
+  - component: {fileID: 4042285243230075464}
   m_Layer: 5
   m_Name: Lable
   m_TagString: Untagged
@@ -437,7 +437,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &-1258479134238220945
+--- !u!114 &4042285243230075464
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -446,7 +446,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6950792999809380761}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9add942c88b7f5446bde4ec155807436, type: 3}
+  m_Script: {fileID: 11500000, guid: 56149682196582948b67f121a16b3a0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LabelItem
   actionButton: {fileID: 4986688637293473953}
@@ -457,3 +457,4 @@ MonoBehaviour:
     title: 
     desc: 
     deviceName: 
+  SourcePrefab: {fileID: 0}
