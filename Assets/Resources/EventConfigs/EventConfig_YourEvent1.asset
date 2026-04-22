@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1f61c98e4998ec42b41c895e17d49da, type: 3}
   m_Name: EventConfig_YourEvent1
   m_EditorClassIdentifier: Assembly-CSharp::EventConfigSO
-  eventName: YourEvent123
+  eventName: 
   targetEventScript: {fileID: 11500000, guid: 8d22636c3cff5ed4bb266503fdb053e7, type: 3}
   methodBinds:
-  - enable: 1
-    webFuncName: GetLabel
-    unityFuncName: SpawnLabelList
+  - enable: 0
+    webFuncName: 
+    unityFuncName: 
     callBackEnable: 0
     callBackFuncName: 
   subscribeBinds:

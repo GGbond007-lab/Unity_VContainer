@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
+using Newtonsoft.Json;
 
 public class YourEvent1 : BaseEvent
 {
@@ -21,11 +22,21 @@ public class YourEvent1 : BaseEvent
 
     public async void SpawnLabelList(object data)
     {
-        if (data is not List<LabelData> dataList)
+
+        List<LabelData> dataList = null;
+        if (data is string jsonStr)
         {
-            Debug.LogError("数据格式错误！");
-            return;
+            try
+            {
+                dataList = JsonConvert.DeserializeObject<List<LabelData>>(jsonStr);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"JSON字符串解析失败！错误信息：{e.Message}\n原始字符串：{jsonStr}");
+                return;
+            }
         }
+
 
         if (LabelCtrl == null)
         {
