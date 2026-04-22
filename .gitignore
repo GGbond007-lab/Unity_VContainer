@@ -1,33 +1,47 @@
-# ==============================================
-# Unity 自动生成文件夹（必须忽略）
-# ==============================================
+# ==============================
+# 可以忽略的文件（缓存/日志/本地配置）
+# ==============================
+# Unity 编辑器缓存
 Library/
 Temp/
-Obj/
-Build/
-Builds/
+obj/
+bin/
 Logs/
 UserSettings/
-
-# ==============================================
-# Visual Studio 自动生成文件（必须忽略）
-# ==============================================
-*.csproj
-*.unityproj
-*.sln
+*.pidb.meta
+*.pidb
 *.suo
 *.user
 *.userprefs
-*.pidb
+*.unityproj
 *.booproj
-
-# ==============================================
-# 系统文件（可忽略）
-# ==============================================
+*.svd
+*.pdb
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
+.TemporaryItems
 .Trashes
-ehthumbs.db
-Thumbs.db
+*.stackdump
+*~
+
+# 包管理缓存
+Packages/packages-lock.json  # 可选：如果团队包版本需统一，注释掉这行
+
+# 构建产物
+Build/
+Builds/
+
+# ==============================
+# 绝对不能忽略的文件（核心配置/引用）
+# （以下内容不要加进 ignore，否则会丢配置/引用）
+# ==============================
+# 1. 项目核心配置
+# ProjectSettings/        ✅ 绝对不能忽略！包含层、标签、输入轴、打包配置等
+# Assets/                 ✅ 绝对不能忽略！包含所有脚本、预制体、场景、资源引用
+# Packages/manifest.json  ✅ 绝对不能忽略！包管理清单（依赖的包列表）
+# .gitignore              ✅ 自己本身
+# README.md               ✅ 项目说明（可选）
+
+# 2. 额外提醒：如果用 VCS 管理 AssetDatabase，以下也不能忽略
+# Assets/AddressableAssetsData/  ✅ 地址簿配置（如果用到Addressable）
+# Assets/Resources/             ✅ 资源文件夹（如果用到）
+# Assets/StreamingAssets/       ✅ 流式资源（如果用到）
