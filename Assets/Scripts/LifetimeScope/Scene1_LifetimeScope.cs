@@ -34,13 +34,10 @@ public class Scene1_LifetimeScope : LifetimeScope
 
         foreach (var type in eventTypes)
         {
-            // 注册事件类型时同时允许按具体类型解析（AsSelf）和按接口解析（AsImplementedInterfaces），
-            // 这样工厂可以使用 container.Resolve(eventType) 来创建并注入依赖。
-            //builder.Register(type, Lifetime.Transient).AsSelf().AsImplementedInterfaces();
+
             builder.Register(type, Lifetime.Transient).AsSelf();
         }
-        // LabelController 需要由容器提供（事件构造函数会注入具体的 controller），
-        // 自动注册当前程序集内所有实现 IEventLabelController 的类型。
+
         var labelControllerTypes = Assembly.GetExecutingAssembly()
             .GetTypes()
             .Where(t => typeof(IEventLabelController).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract);
@@ -57,7 +54,6 @@ public class Scene1_LifetimeScope : LifetimeScope
         // 输入服务
         builder.RegisterEntryPoint<InputService>().As<IInputService>();
 
-        // 🔥 修复 3：工厂不直接创建，改为“手动创建”
         builder.Register<Func<Type, IBaseEvent>>(container =>
         {
             return eventType =>

@@ -15,7 +15,7 @@ public class RootLifetimeScope : LifetimeScope
 
         // 全局管理器
         builder.Register<ISceneLoadManager, SceneLoadManager>(Lifetime.Singleton);
-        builder.Register<IDataSyncManager, DataSyncManager>(Lifetime.Singleton);
+        //builder.Register<IDataSyncManager, DataSyncManager>(Lifetime.Singleton);
         builder.Register<ILabelManager, LabelManager>(Lifetime.Singleton);
 
         // 入口
