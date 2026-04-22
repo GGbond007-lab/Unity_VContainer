@@ -58,7 +58,15 @@ public class YourEvent1 : BaseEvent
             var prefab = await _labelManager.LoadLabelPrefab(itemData.prefabKey);
             var newLabel = _labelManager.CreateLabel(prefab, LabelCtrl.RootTransform);
 
-            newLabel.SetData(itemData);
+            newLabel.SetData(itemData); newLabel.Refresh();
+            if (newLabel is LabelItem labelItem)
+            {
+                // 绑定点击事件，闭包缓存当前 itemData，点击时能直接用
+                labelItem.SetClickEvent(() =>
+                {
+                    Debug.Log(itemData.deviceName);
+                });
+            }
             LabelCtrl.AddLabel(newLabel);
         }
     }

@@ -19,7 +19,8 @@ public class RootLifetimeScope : LifetimeScope
         builder.Register<ILabelManager, LabelManager>(Lifetime.Singleton);
 
         // 入口
-        builder.RegisterEntryPoint<RootEntryPoint>();
+       // builder.RegisterEntryPoint<RootEntryPoint>();
+
     }
 }
 
