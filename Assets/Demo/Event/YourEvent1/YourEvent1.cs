@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
-using Newtonsoft.Json;
 
 public class YourEvent1 : BaseEvent
 {
@@ -24,18 +25,17 @@ public class YourEvent1 : BaseEvent
     {
 
         List<LabelData> dataList = null;
-        if (data is string jsonStr)
+
+        if (data is not JArray jArray)
         {
-            try
-            {
-                dataList = JsonConvert.DeserializeObject<List<LabelData>>(jsonStr);
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError($"JSON字符串解析失败！错误信息：{e.Message}\n原始字符串：{jsonStr}");
-                return;
-            }
+            return;
         }
+
+        dataList = jArray.ToObject<List<LabelData>>();
+
+        // 空值判断
+        if (dataList == null || dataList.Count == 0)
+            return;
 
 
         if (LabelCtrl == null)

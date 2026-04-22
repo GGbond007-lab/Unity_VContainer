@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Default Local Group
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
   m_GroupName: Default Local Group
-  m_GUID: f4c88a10f0fd208489101d77ffe52984
+  m_GUID: 5ca5700851933e64490c1a35c550dd50
   m_SerializeEntries:
   - m_GUID: 7a2bf4fabbb10554ab25c55aa9489cc2
     m_Address: Lable

@@ -8,6 +8,18 @@ public class InputService : IInputService, ITickable
 
     #region 定义测试参数
     // 构建前端格式的真实 data 数据
+    string test1 = @"
+{
+    ""eventName"": ""YourEvent123"",
+    ""funcName"": ""GetLabel"",
+    ""data"": [
+        {""identifyID"":""1"",""prefabKey"":""Lable"",""title"":""标签A"",""desc"":""标签A的描述"",""deviceName"":""标签A的设备名""},
+        {""identifyID"":""2"",""prefabKey"":""Lable"",""title"":""标签B"",""desc"":""标签B的描述"",""deviceName"":""标签B的设备名""}
+    ]
+}";
+
+
+
     List<LabelData> testData1 = new List<LabelData>
     {
         new LabelData
@@ -81,30 +93,17 @@ public class InputService : IInputService, ITickable
 
     public void CheckInput()
     {
-        // debug
-        // Debug.Log("[InputService] Tick");
+
         if (Input.GetKeyDown(KeyCode.Alpha1))//新建事件YoueEvent1，同时新建对应事件和对应方法
         {
-            _msgManager.Receive(
-               eventName: "YourEvent123",
-               funcName: "GetLabel",
-               data: testData1
-           );
+            _msgManager.Receive(test1);
+            if (Input.GetKeyDown(KeyCode.Alpha0))
+            {
+                eventStack.Pop();
+                _labelManager.DebugPoolStatus();
+            }
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2))//测试前端调用事件方法
-        {
-            _msgManager.Receive(
-               eventName: "YourEvent123",
-               funcName: "GetLabel",
-               data: testData3
-           );
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            eventStack.Pop();
-            _labelManager.DebugPoolStatus();
-        }
+
+
     }
-
-
 }

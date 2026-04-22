@@ -3,44 +3,24 @@
   "WorkspaceRootPath": "D:\\MyGitProject\\Unity_VContainer\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Event\\YourEvent1\\YourEvent1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Demo\\Event\\YourEvent1\\YourEvent1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\demo\\event\\yourevent1\\yourevent1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\demo\\event\\yourevent1\\yourevent1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\demo\\public\\core\\jsonserializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\demo\\public\\core\\jsonserializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\demo\\event\\yourevent1\\yourevent1msghandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\demo\\event\\yourevent1\\yourevent1msghandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\demo\\public\\core\\webmsghandlermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\demo\\public\\core\\webmsghandlermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Public\\Core\\InputService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Demo\\Public\\Core\\InputService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\demo\\event\\yourevent1\\label\\yourevent1labelcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\demo\\event\\yourevent1\\label\\yourevent1labelcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\demo\\interface\\core\\ilabelmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\demo\\interface\\core\\ilabelmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\demo\\public\\core\\inputservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\demo\\public\\core\\inputservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\demo\\event\\yourevent1\\label\\labelnewitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\demo\\event\\yourevent1\\label\\labelnewitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\demo\\event\\yourevent1\\label\\labelitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\demo\\event\\yourevent1\\label\\labelitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\demo\\lifetimescope\\rootlifetimescope.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\demo\\lifetimescope\\rootlifetimescope.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:2:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Event\\YourEvent1\\YourEvent1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:2:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Demo\\Event\\YourEvent1\\YourEvent1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\demo\\public\\core\\labelmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\demo\\public\\core\\labelmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -50,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 10,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -62,106 +42,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "JsonSerializer.cs",
-              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Public\\Core\\JsonSerializer.cs",
-              "RelativeDocumentMoniker": "Assets\\Demo\\Public\\Core\\JsonSerializer.cs",
-              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Public\\Core\\JsonSerializer.cs",
-              "RelativeToolTip": "Assets\\Demo\\Public\\Core\\JsonSerializer.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-21T08:25:47.038Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "YourEvent1LabelController.cs",
-              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Event\\YourEvent1\\Label\\YourEvent1LabelController.cs",
-              "RelativeDocumentMoniker": "Assets\\Demo\\Event\\YourEvent1\\Label\\YourEvent1LabelController.cs",
-              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Event\\YourEvent1\\Label\\YourEvent1LabelController.cs",
-              "RelativeToolTip": "Assets\\Demo\\Event\\YourEvent1\\Label\\YourEvent1LabelController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "Title": "WebMsgHandlerManager.cs",
+              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Public\\Core\\WebMsgHandlerManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Demo\\Public\\Core\\WebMsgHandlerManager.cs",
+              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Public\\Core\\WebMsgHandlerManager.cs",
+              "RelativeToolTip": "Assets\\Demo\\Public\\Core\\WebMsgHandlerManager.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAowDYAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-21T06:55:12.723Z",
+              "WhenOpened": "2026-04-22T02:18:07.826Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "InputService.cs",
-              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Public\\Core\\InputService.cs",
-              "RelativeDocumentMoniker": "Assets\\Demo\\Public\\Core\\InputService.cs",
-              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Public\\Core\\InputService.cs",
-              "RelativeToolTip": "Assets\\Demo\\Public\\Core\\InputService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAFAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "YourEvent1MsgHandler.cs",
+              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Event\\YourEvent1\\YourEvent1MsgHandler.cs",
+              "RelativeDocumentMoniker": "Assets\\Demo\\Event\\YourEvent1\\YourEvent1MsgHandler.cs",
+              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Event\\YourEvent1\\YourEvent1MsgHandler.cs",
+              "RelativeToolTip": "Assets\\Demo\\Event\\YourEvent1\\YourEvent1MsgHandler.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAzwDQAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-21T06:45:48.281Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "ILabelManager.cs",
-              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Interface\\Core\\ILabelManager.cs",
-              "RelativeDocumentMoniker": "Assets\\Demo\\Interface\\Core\\ILabelManager.cs",
-              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Interface\\Core\\ILabelManager.cs",
-              "RelativeToolTip": "Assets\\Demo\\Interface\\Core\\ILabelManager.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAADwvwYAAABDAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-21T06:38:33.201Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "LabelManager.cs",
-              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Public\\Core\\LabelManager.cs",
-              "RelativeDocumentMoniker": "Assets\\Demo\\Public\\Core\\LabelManager.cs",
-              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Public\\Core\\LabelManager.cs",
-              "RelativeToolTip": "Assets\\Demo\\Public\\Core\\LabelManager.cs",
-              "ViewState": "AgIAADAAAAAAAAAAAAAIwEIAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-21T05:18:01.017Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "LabelNewItem.cs",
-              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Event\\YourEvent1\\Label\\LabelNewItem.cs",
-              "RelativeDocumentMoniker": "Assets\\Demo\\Event\\YourEvent1\\Label\\LabelNewItem.cs",
-              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Event\\YourEvent1\\Label\\LabelNewItem.cs",
-              "RelativeToolTip": "Assets\\Demo\\Event\\YourEvent1\\Label\\LabelNewItem.cs",
-              "ViewState": "AgIAACIAAAAAAAAAAAAUwBkAAAAsAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-21T06:13:32.769Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "LabelItem.cs",
-              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Event\\YourEvent1\\Label\\LabelItem.cs",
-              "RelativeDocumentMoniker": "Assets\\Demo\\Event\\YourEvent1\\Label\\LabelItem.cs",
-              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Event\\YourEvent1\\Label\\LabelItem.cs",
-              "RelativeToolTip": "Assets\\Demo\\Event\\YourEvent1\\Label\\LabelItem.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABoAAAAsAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-21T05:23:59.25Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "RootLifetimeScope.cs",
-              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\LifetimeScope\\RootLifetimeScope.cs",
-              "RelativeDocumentMoniker": "Assets\\Demo\\LifetimeScope\\RootLifetimeScope.cs",
-              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\LifetimeScope\\RootLifetimeScope.cs",
-              "RelativeToolTip": "Assets\\Demo\\LifetimeScope\\RootLifetimeScope.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-21T05:33:10.677Z",
+              "WhenOpened": "2026-04-22T02:08:33.373Z",
               "EditorCaption": ""
             },
             {
@@ -172,22 +74,36 @@
               "RelativeDocumentMoniker": "Assets\\Demo\\Event\\YourEvent1\\YourEvent1.cs",
               "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Event\\YourEvent1\\YourEvent1.cs",
               "RelativeToolTip": "Assets\\Demo\\Event\\YourEvent1\\YourEvent1.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABcAAAAAAAAAA==",
+              "ViewState": "AgIAABEAAAAAAAAAAAAAwBoAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-21T08:25:01.811Z",
+              "WhenOpened": "2026-04-22T02:02:54.537Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "YourEvent1.cs",
-              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Event\\YourEvent1\\YourEvent1.cs",
-              "RelativeDocumentMoniker": "Assets\\Demo\\Event\\YourEvent1\\YourEvent1.cs",
-              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Event\\YourEvent1\\YourEvent1.cs",
-              "RelativeToolTip": "Assets\\Demo\\Event\\YourEvent1\\YourEvent1.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAjAAAAAAAAAA==",
+              "DocumentIndex": 4,
+              "Title": "YourEvent1LabelController.cs",
+              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Event\\YourEvent1\\Label\\YourEvent1LabelController.cs",
+              "RelativeDocumentMoniker": "Assets\\Demo\\Event\\YourEvent1\\Label\\YourEvent1LabelController.cs",
+              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Event\\YourEvent1\\Label\\YourEvent1LabelController.cs",
+              "RelativeToolTip": "Assets\\Demo\\Event\\YourEvent1\\Label\\YourEvent1LabelController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-21T05:34:06.734Z"
+              "WhenOpened": "2026-04-22T02:39:34.135Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "InputService.cs",
+              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Public\\Core\\InputService.cs",
+              "RelativeDocumentMoniker": "Assets\\Demo\\Public\\Core\\InputService.cs",
+              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Demo\\Public\\Core\\InputService.cs",
+              "RelativeToolTip": "Assets\\Demo\\Public\\Core\\InputService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-22T02:43:44.67Z",
+              "EditorCaption": ""
             }
           ]
         }

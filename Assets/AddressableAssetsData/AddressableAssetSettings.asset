@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 468a46d0ae32c3544b7d98094e6448a9, type: 3}
   m_Name: AddressableAssetSettings
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetSettings
-  m_DefaultGroup: f4c88a10f0fd208489101d77ffe52984
+  m_DefaultGroup: 5ca5700851933e64490c1a35c550dd50
   m_currentHash:
     serializedVersion: 2
     Hash: 00000000000000000000000000000000
@@ -68,34 +68,34 @@ MonoBehaviour:
   m_ProfileSettings:
     m_Profiles:
     - m_InheritedParent: 
-      m_Id: 69689aa37ca00f74e88bc6e1d39456ca
+      m_Id: f69d0ca1ba444094b940b519a057a905
       m_ProfileName: Default
       m_Values:
-      - m_Id: 2209375f6f0ae8941881185f30617129
-        m_Value: 'ServerData/[BuildTarget]'
-      - m_Id: 2dfe4971cee4cb849b24b3cf61ac7e65
-        m_Value: <undefined>
-      - m_Id: 359df74d5e8abdb41ada1e3ce106b9b3
+      - m_Id: 234e4dd3dc8fd7a469f7ba5dcec1025c
         m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
-      - m_Id: 8d9048fbda1cd7e4ab22453ee4b24938
+      - m_Id: a0ad2d160d0393d4dbd9bf8a87495fe7
         m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
-      - m_Id: c87193613241bde41af40a0226a30272
+      - m_Id: aa5defa6fa226c242900a255e26131c0
         m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: d67a926522ed500468e4d374cc4040f6
+        m_Value: 'ServerData/[BuildTarget]'
+      - m_Id: e248cf9cc01688241a57ac8586cfdf09
+        m_Value: <undefined>
     m_ProfileEntryNames:
-    - m_Id: 2209375f6f0ae8941881185f30617129
-      m_Name: Remote.BuildPath
-      m_InlineUsage: 0
-    - m_Id: 2dfe4971cee4cb849b24b3cf61ac7e65
-      m_Name: Remote.LoadPath
-      m_InlineUsage: 0
-    - m_Id: 359df74d5e8abdb41ada1e3ce106b9b3
+    - m_Id: 234e4dd3dc8fd7a469f7ba5dcec1025c
       m_Name: Local.LoadPath
       m_InlineUsage: 0
-    - m_Id: 8d9048fbda1cd7e4ab22453ee4b24938
+    - m_Id: a0ad2d160d0393d4dbd9bf8a87495fe7
       m_Name: Local.BuildPath
       m_InlineUsage: 0
-    - m_Id: c87193613241bde41af40a0226a30272
+    - m_Id: aa5defa6fa226c242900a255e26131c0
       m_Name: BuildTarget
+      m_InlineUsage: 0
+    - m_Id: d67a926522ed500468e4d374cc4040f6
+      m_Name: Remote.BuildPath
+      m_InlineUsage: 0
+    - m_Id: e248cf9cc01688241a57ac8586cfdf09
+      m_Name: Remote.LoadPath
       m_InlineUsage: 0
     m_ProfileVersion: 1
   m_LabelTable:
@@ -113,4 +113,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ebb63418a2947134f804e3920390fd1c, type: 2}
   - {fileID: 11400000, guid: e0bc0868fa6905b48afa6042a3e912c4, type: 2}
   - {fileID: 11400000, guid: 54f30a8172c14be409ceaed92df6a5c2, type: 2}
-  m_ActiveProfileId: 69689aa37ca00f74e88bc6e1d39456ca
+  m_ActiveProfileId: f69d0ca1ba444094b940b519a057a905
