@@ -27,7 +27,7 @@ public class Scene1_LifetimeScope : LifetimeScope
 
         builder.Register<WebMsgHandlerManager>(Lifetime.Scoped);
 
-        // 🔥 修复 1：只注册事件类型，不让容器自动创建实例
+        // 只注册事件类型，不让容器自动创建实例
         var eventTypes = Assembly.GetExecutingAssembly()
             .GetTypes()
             .Where(t => t.IsClass && !t.IsAbstract && typeof(IBaseEvent).IsAssignableFrom(t));
@@ -44,7 +44,6 @@ public class Scene1_LifetimeScope : LifetimeScope
 
         foreach (var lcType in labelControllerTypes)
         {
-            //builder.Register(lcType, Lifetime.Transient).AsSelf().AsImplementedInterfaces();
             builder.Register(lcType, Lifetime.Transient).AsSelf();
         }
 

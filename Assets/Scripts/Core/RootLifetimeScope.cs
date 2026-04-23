@@ -1,8 +1,16 @@
-﻿using VContainer;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using UnityEngine;
+using VContainer;
 using VContainer.Unity;
+using VContainer.StateMachine;
 
 public class RootLifetimeScope : LifetimeScope
 {
+    //[SerializeField]
+    //private MonoBehaviour coroutineRunner;
+    
     protected override void Configure(IContainerBuilder builder)
     {
         // 1. 事件总线
@@ -18,9 +26,30 @@ public class RootLifetimeScope : LifetimeScope
         //builder.Register<IDataSyncManager, DataSyncManager>(Lifetime.Singleton);
         builder.Register<ILabelManager, LabelManager>(Lifetime.Singleton);
 
+        // 协程运行器
+        //builder.RegisterInstance(coroutineRunner);
+
+        // 状态机
+        builder.Register<StateMachineFactory>(Lifetime.Singleton);
+        
+        // 自动注册所有继承自 IState 的状态
+        AutoRegisterStates(builder);
+
         // 入口
        // builder.RegisterEntryPoint<RootEntryPoint>();
 
+    }
+    
+    private void AutoRegisterStates(IContainerBuilder builder)
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+        var stateTypes = assembly.GetTypes()
+            .Where(t => t.IsClass && !t.IsAbstract && typeof(IState).IsAssignableFrom(t));
+        
+        foreach (var type in stateTypes)
+        {
+            builder.Register(type, Lifetime.Transient);
+        }
     }
 }
 

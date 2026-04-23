@@ -59,13 +59,17 @@
     <Compile Include="Assets\Scripts\Event\YourEvent1\Label\LabelData.cs" />
     <Compile Include="Assets\Scripts\Event\SceneLoadedEvent.cs" />
     <Compile Include="Assets\Scripts\Event\YourEvent1\Label\LabelNewItem.cs" />
+    <Compile Include="Assets\Scripts\StateMachine\StateMachineExample.cs" />
     <Compile Include="Assets\Scripts\Core\Interface\IBaseEvent.cs" />
     <Compile Include="Assets\Scripts\Core\Interface\ISceneLoadManager.cs" />
     <Compile Include="Assets\Scripts\Event\YourEvent1\Label\ILabel.cs" />
     <Compile Include="Assets\Scripts\Event\YourEvent2\YourEvent2MsgHandler.cs" />
     <Compile Include="Assets\Scripts\Core\WebMsgHandlerManager.cs" />
+    <Compile Include="Assets\Scripts\StateMachine\ExampleStates.cs" />
+    <Compile Include="Assets\Scripts\StateMachine\IState.cs" />
     <Compile Include="Assets\Scripts\LifetimeScope\Scene1_LifetimeScope.cs" />
     <Compile Include="Assets\Scripts\Core\InputService.cs" />
+    <Compile Include="Assets\Scripts\StateMachine\StateMachine.cs" />
     <Compile Include="Assets\Scripts\Core\Interface\IDataSyncManager.cs" />
     <Compile Include="Assets\Scripts\Core\SceneLoadManager.cs" />
     <Compile Include="Assets\Scripts\Event\YourEvent1\Label\LabelItem.cs" />
@@ -77,6 +81,7 @@
     <Compile Include="Assets\Scripts\Core\EventBus.cs" />
     <Compile Include="Assets\Scripts\Event\YourEvent1\YourEvent1.cs" />
     <Compile Include="Assets\Scripts\Event\YourEvent1\YourEvent1MsgHandler.cs" />
+    <Compile Include="Assets\Scripts\StateMachine\StateMachineFactory.cs" />
     <Compile Include="Assets\Scripts\Core\Interface\ILabelManager.cs" />
     <Compile Include="Assets\Scripts\Core\BaseEvent.cs" />
     <Compile Include="Assets\Scripts\Core\Interface\IInputService.cs" />
@@ -1277,6 +1282,14 @@
       <HintPath>Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UniTask.TextMeshPro">
+      <HintPath>Library\ScriptAssemblies\UniTask.TextMeshPro.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UniTask.DOTween">
+      <HintPath>Library\ScriptAssemblies\UniTask.DOTween.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Collections">
       <HintPath>Library\ScriptAssemblies\Unity.Collections.dll</HintPath>
       <Private>False</Private>
@@ -1345,12 +1358,20 @@
       <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Universal.Config.Runtime.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UniTask.Linq">
+      <HintPath>Library\ScriptAssemblies\UniTask.Linq.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
       <HintPath>Library\ScriptAssemblies\Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Collections.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Collections.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UniTask.Addressables">
+      <HintPath>Library\ScriptAssemblies\UniTask.Addressables.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.ShaderGraph.Editor">
@@ -1375,6 +1396,10 @@
     </Reference>
     <Reference Include="UnityEditor.UI">
       <HintPath>Library\ScriptAssemblies\UnityEditor.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UniTask">
+      <HintPath>Library\ScriptAssemblies\UniTask.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

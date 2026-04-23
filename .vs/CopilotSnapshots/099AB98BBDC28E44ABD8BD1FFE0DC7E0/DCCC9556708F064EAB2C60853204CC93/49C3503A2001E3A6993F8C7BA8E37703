@@ -1,0 +1,47 @@
+﻿using System.Collections.Generic;
+using VContainer;
+
+namespace VContainer.StateMachine
+{
+    public class StateMachine
+    {
+        private readonly IObjectResolver resolver;
+        private Dictionary<string, IState> states = new Dictionary<string, IState>();
+        private IState currentState;
+        private string currentStateName;
+
+        public StateMachine(IObjectResolver resolver)
+        {
+            this.resolver = resolver;
+        }
+
+        public void AddState(string name, IState state)
+        {
+            states[name] = state;
+        }
+
+        public void AddState<T>(string name) where T : IState
+        {
+            var state = resolver.Resolve<T>();
+            states[name] = state;
+        }
+
+        public void ChangeState(string name)
+        {
+            if (states.TryGetValue(name, out var state))
+            {
+                currentState?.Exit();
+                currentState = state;
+                currentStateName = name;
+                currentState.Enter();
+            }
+        }
+
+        public void Update()
+        {
+            currentState?.Update();
+        }
+
+        public string CurrentStateName => currentStateName;
+    }
+}

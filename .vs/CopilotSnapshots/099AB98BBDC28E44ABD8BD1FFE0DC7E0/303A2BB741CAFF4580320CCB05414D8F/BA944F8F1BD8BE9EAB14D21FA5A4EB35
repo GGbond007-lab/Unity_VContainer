@@ -1,0 +1,112 @@
+﻿using System;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
+using VContainer;
+using VContainer.Unity;
+using VContainer.StateMachine;
+
+public class StateMachineExample : MonoBehaviour
+{
+    [Inject]
+    private StateMachineFactory stateMachineFactory;
+    private StateMachine stateMachine;
+
+    private void Start()
+    {
+        // 创建状态机
+        stateMachine = stateMachineFactory.Create();
+        
+        // 创建状态实例并添加回调
+        var idleState = new IdleState();
+        idleState.OnEnter += () => Debug.Log("Idle State Entered - Callback triggered!");
+        idleState.OnUpdate += () => Debug.Log("Idle State Updated - Callback triggered!");
+        idleState.OnExit += () => Debug.Log("Idle State Exited - Callback triggered!");
+        
+        var movingState = new MovingState();
+        movingState.OnEnter += () => Debug.Log("Moving State Entered - Callback triggered!");
+        movingState.OnUpdate += () => Debug.Log("Moving State Updated - Callback triggered!");
+        movingState.OnExit += () => Debug.Log("Moving State Exited - Callback triggered!");
+        
+        var attackingState = new AttackingState();
+        attackingState.OnEnter += () => Debug.Log("Attacking State Entered - Callback triggered!");
+        attackingState.OnUpdate += () => Debug.Log("Attacking State Updated - Callback triggered!");
+        attackingState.OnExit += () => Debug.Log("Attacking State Exited - Callback triggered!");
+        
+        // 添加状态
+        stateMachine.AddState("Idle", idleState);
+        stateMachine.AddState("Moving", movingState);
+        stateMachine.AddState("Attacking", attackingState);
+        
+        // 初始状态（同步）
+        stateMachine.ChangeState("Idle");
+        
+        // 示例：使用异步状态转换
+        ExampleAsyncStateTransition();
+    }
+
+    private void Update()
+    {
+        // 同步更新
+        stateMachine.Update();
+        
+        // 异步更新
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            stateMachine.UpdateAsync();
+        }
+        
+        // 同步状态切换
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            stateMachine.ChangeState("Idle");
+        }
+        else if (Input.GetKeyDown(KeyCode.M))
+        {
+            stateMachine.ChangeState("Moving");
+        }
+        else if (Input.GetKeyDown(KeyCode.A))
+        {
+            stateMachine.ChangeState("Attacking");
+        }
+        
+        // 异步状态切换
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            stateMachine.ChangeStateAsync("Idle");
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            stateMachine.ChangeStateAsync("Moving");
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            stateMachine.ChangeStateAsync("Attacking");
+        }
+    }
+    
+    private async void ExampleAsyncStateTransition()
+    {
+        Debug.Log("=== 异步状态转换示例 ===");
+        
+        // 等待2秒
+        await UniTask.Delay(2000);
+        
+        // 异步切换到移动状态
+        Debug.Log("开始异步切换到移动状态");
+        await stateMachine.ChangeStateAsync("Moving");
+        
+        // 等待3秒
+        await UniTask.Delay(3000);
+        
+        // 异步切换到攻击状态
+        Debug.Log("开始异步切换到攻击状态");
+        await stateMachine.ChangeStateAsync("Attacking");
+        
+        // 等待3秒
+        await UniTask.Delay(3000);
+        
+        // 异步切换到 idle 状态
+        Debug.Log("开始异步切换到 idle 状态");
+        await stateMachine.ChangeStateAsync("Idle");
+    }
+}
