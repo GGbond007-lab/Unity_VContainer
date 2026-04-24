@@ -10,27 +10,27 @@ public class Scene1_LifetimeScope : LifetimeScope
     protected override void Configure(IContainerBuilder builder)
     {
         // 配置
-        foreach (var config in EventConfigProvider.AllConfigs().Values)
+        foreach (var config in ActionConfigProvider.AllConfigs().Values)
         {
-            builder.Register<EventConfigSO>(c => config, Lifetime.Transient);
+            builder.Register<ActionConfigSO>(c => config, Lifetime.Transient);
         }
 
         // 消息处理器
         var handlerTypes = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(a => a.GetTypes())
-            .Where(t => typeof(IEventMsgHandler).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract);
+            .Where(t => typeof(IActionMsgHandler).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract);
 
         foreach (var type in handlerTypes)
         {
             builder.Register(type, Lifetime.Scoped).AsImplementedInterfaces();
         }
 
-        builder.Register<WebMsgHandlerManager>(Lifetime.Scoped);
+
 
         // 只注册事件类型，不让容器自动创建实例
         var eventTypes = Assembly.GetExecutingAssembly()
             .GetTypes()
-            .Where(t => t.IsClass && !t.IsAbstract && typeof(IBaseEvent).IsAssignableFrom(t));
+            .Where(t => t.IsClass && !t.IsAbstract && typeof(IBaseAction).IsAssignableFrom(t));
 
         foreach (var type in eventTypes)
         {
@@ -40,7 +40,7 @@ public class Scene1_LifetimeScope : LifetimeScope
 
         var labelControllerTypes = Assembly.GetExecutingAssembly()
             .GetTypes()
-            .Where(t => typeof(IEventLabelController).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract);
+            .Where(t => typeof(IActionLabelController).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract);
 
         foreach (var lcType in labelControllerTypes)
         {
@@ -48,18 +48,18 @@ public class Scene1_LifetimeScope : LifetimeScope
         }
 
         // 事件栈
-        builder.Register<EventStack>(Lifetime.Singleton);
+        builder.Register<ActionStack>(Lifetime.Singleton);
 
         // 输入服务
         builder.RegisterEntryPoint<InputService>().As<IInputService>();
 
-        builder.Register<Func<Type, IBaseEvent>>(container =>
+        builder.Register<Func<Type, IBaseAction>>(container =>
         {
             return eventType =>
             {
                 // 使用容器解析以保证依赖注入
-                var evt = (IBaseEvent)container.Resolve(eventType);
-                var stack = container.Resolve<EventStack>();
+                var evt = (IBaseAction)container.Resolve(eventType);
+                var stack = container.Resolve<ActionStack>();
                 stack.Push(evt);
                 return evt;
             };
@@ -72,9 +72,9 @@ public class Scene1_LifetimeScope : LifetimeScope
 public class Scene1EntryPoint : IStartable
 {
     private readonly ILabelManager _labelManager;
-    private readonly IEventBus _eventBus;
+    private readonly IActionBus _eventBus;
 
-    public Scene1EntryPoint(ILabelManager labelManager, IEventBus eventBus)
+    public Scene1EntryPoint(ILabelManager labelManager, IActionBus eventBus)
     {
         _labelManager = labelManager;
         _eventBus = eventBus;
