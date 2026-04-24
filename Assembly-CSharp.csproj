@@ -50,15 +50,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Network\Responses\SceneLoadResponse.cs" />
+    <Compile Include="Assets\Scripts\Action\YourAction1\YourAction1.cs" />
     <Compile Include="Assets\Scripts\Core\NetWork\WebMsgHandlerManager.cs" />
-    <Compile Include="Assets\Scripts\Action\YourEvent1\Label\YourActionLabelController.cs" />
     <Compile Include="Assets\Scripts\Core\Action\ActionBus.cs" />
     <Compile Include="Assets\Scripts\Core\ActionConfig\ActionConfigSOEditor.cs" />
     <Compile Include="Assets\Scripts\LifetimeScope\RootLifetimeScope.cs" />
     <Compile Include="Assets\Scripts\Core\NetWork\JsonSerializer.cs" />
+    <Compile Include="Assets\Scripts\Action\YourAction2\YourAction2MsgHandler.cs" />
     <Compile Include="Assets\Scripts\Manager\LabelManager.cs" />
+    <Compile Include="Assets\Scripts\Action\YourAction1\Label\LabelItem.cs" />
     <Compile Include="Assets\Scripts\StateMachine\StateMachineExample.cs" />
-    <Compile Include="Assets\Scripts\Action\YourEvent1\Label\LabelItem.cs" />
     <Compile Include="Assets\Scripts\Manager\SceneLoadManager.cs" />
     <Compile Include="Assets\Scripts\Core\Interface\ISceneLoadManager.cs" />
     <Compile Include="Assets\Scripts\Core\Interface\IActionBus.cs" />
@@ -68,28 +69,27 @@
     <Compile Include="Assets\Scripts\StateMachine\IState.cs" />
     <Compile Include="Assets\Scripts\Core\ActionConfig\ActionConfigProvider.cs" />
     <Compile Include="Assets\Scripts\Core\Interface\IMessageSender.cs" />
+    <Compile Include="Assets\Scripts\Action\YourAction1\YourAction1MsgHandler.cs" />
     <Compile Include="Assets\Scripts\LifetimeScope\Scene1_LifetimeScope.cs" />
     <Compile Include="Assets\Scripts\StateMachine\StateMachine.cs" />
     <Compile Include="Assets\Scripts\Core\Interface\IDataSyncManager.cs" />
-    <Compile Include="Assets\Scripts\Action\YourEvent1\Label\LabelNewItem.cs" />
     <Compile Include="Assets\Scripts\Core\Action\BaseAction.cs" />
-    <Compile Include="Assets\Scripts\Action\YourEvent1\YourAction1MsgHandler.cs" />
-    <Compile Include="Assets\Scripts\Action\YourEvent2\YourAction2.cs" />
-    <Compile Include="Assets\Scripts\Action\YourEvent1\Label\ILabel.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\Core\ActionConfig\ActionConfigSO.cs" />
     <Compile Include="Assets\Scripts\Core\Action\ActionStack.cs" />
+    <Compile Include="Assets\Scripts\Action\YourAction1\Label\LabelNewItem.cs" />
     <Compile Include="Assets\Scripts\Core\NetWork\WebMessageSender.cs" />
     <Compile Include="Assets\Scripts\Core\NetWork\WebMessage.cs" />
     <Compile Include="Assets\Scripts\Public\InputService.cs" />
     <Compile Include="Assets\Scripts\StateMachine\StateMachineFactory.cs" />
     <Compile Include="Assets\Scripts\Core\Interface\ILabelManager.cs" />
+    <Compile Include="Assets\Scripts\Action\YourAction1\Label\ILabel.cs" />
     <Compile Include="Assets\Scripts\Core\Interface\IActionMsgHandler.cs" />
-    <Compile Include="Assets\Scripts\Action\YourEvent1\YourAction1.cs" />
-    <Compile Include="Assets\Scripts\Action\YourEvent1\Label\LabelData.cs" />
-    <Compile Include="Assets\Scripts\Action\YourEvent2\YourAction2MsgHandler.cs" />
+    <Compile Include="Assets\Scripts\Action\YourAction1\Label\YourActionLabelController.cs" />
     <Compile Include="Assets\Scripts\Core\Interface\IInputService.cs" />
+    <Compile Include="Assets\Scripts\Action\YourAction2\YourAction2.cs" />
     <Compile Include="Assets\Scripts\Core\Interface\IActionLabelController.cs" />
+    <Compile Include="Assets\Scripts\Action\YourAction1\Label\LabelData.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
