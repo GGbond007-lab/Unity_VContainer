@@ -17,6 +17,7 @@ public static class ActionConfigProvider
     {
         _configDict = new Dictionary<string, ActionConfigSO>();
 
+        // 注意：你文件夹是 EventConfigs 吗？如果是 ActionConfigs 就改这里
         var configs = Resources.LoadAll<ActionConfigSO>("EventConfigs");
         foreach (var c in configs)
         {
@@ -31,12 +32,16 @@ public static class ActionConfigProvider
         _configDict.TryGetValue(eventName, out var config);
         return config;
     }
-    // 🔥 按 targetEventScript 绑定的类类型查找配置
+
+    // 🔥 🔥 🔥 已修复：用 targetEventClassName 查找
     public static ActionConfigSO GetConfigByTargetScript(Type targetType)
     {
+        if (targetType == null) return null;
+
         foreach (var config in AllConfigs().Values)
         {
-            if (config.targetEventScript != null && config.targetEventScript.GetClass() == targetType)
+            // 用 类名字符串 匹配，不再使用 MonoScript
+            if (config.targetEventClassName == targetType.FullName)
             {
                 return config;
             }

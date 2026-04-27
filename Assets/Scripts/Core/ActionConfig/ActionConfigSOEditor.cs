@@ -1,10 +1,10 @@
-﻿#if UNITY_EDITOR
-using System;
+﻿using System;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(ActionConfigSO))]
 public class ActionConfigSOEditor : Editor
 {
@@ -21,8 +21,12 @@ public class ActionConfigSOEditor : Editor
         DrawDefaultInspector();
         serializedObject.ApplyModifiedProperties();
 
-        if (_config.targetEventScript == null) return;
-        Type selfType = _config.targetEventScript.GetClass();
+        // 🔥 关键修复：从 serializedObject 中获取 targetEventScript
+        var prop = serializedObject.FindProperty("targetEventScript");
+        if (prop == null || prop.objectReferenceValue == null) return;
+
+        MonoScript script = prop.objectReferenceValue as MonoScript;
+        Type selfType = script.GetClass();
         if (selfType == null) return;
 
         DrawMethodBindButtonsOnly(selfType);
@@ -134,7 +138,7 @@ public class ActionConfigSOEditor : Editor
     private void ShowEventMethodMenu(Type targetType, ActionSubscribeBind sub)
     {
         GenericMenu m = new GenericMenu();
-        foreach (var mi in targetType.GetMethods(BindingFlags.Instance | BindingFlags.Public ))
+        foreach (var mi in targetType.GetMethods(BindingFlags.Instance | BindingFlags.Public))
         {
             if (mi.ReturnType == typeof(void))
             {
@@ -155,7 +159,7 @@ public class ActionConfigSOEditor : Editor
     private void ShowLocalExecuteMethodMenu(Type selfType, ActionSubscribeBind sub)
     {
         GenericMenu m = new GenericMenu();
-        foreach (var mi in selfType.GetMethods(BindingFlags.Instance | BindingFlags.Public ))
+        foreach (var mi in selfType.GetMethods(BindingFlags.Instance | BindingFlags.Public))
         {
             if (mi.ReturnType == typeof(void))
             {
@@ -172,7 +176,7 @@ public class ActionConfigSOEditor : Editor
     private void ShowValidMethodMenu(Type eventType, ActionMethodBind bind, bool isCallback = false)
     {
         GenericMenu m = new GenericMenu();
-        foreach (var mi in eventType.GetMethods(BindingFlags.Instance | BindingFlags.Public ))
+        foreach (var mi in eventType.GetMethods(BindingFlags.Instance | BindingFlags.Public))
         {
             if (mi.ReturnType != typeof(void)) continue;
 

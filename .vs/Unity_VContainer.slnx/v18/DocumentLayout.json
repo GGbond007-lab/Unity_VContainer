@@ -3,52 +3,12 @@
   "WorkspaceRootPath": "D:\\MyGitProject\\Unity_VContainer\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\scripts\\action\\yourevent1\\youraction1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\action\\yourevent1\\youraction1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\scripts\\core\\actionconfig\\actionconfigso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\core\\actionconfig\\actionconfigso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\scripts\\core\\actionconfig\\actionconfigsoeditor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\core\\actionconfig\\actionconfigsoeditor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\scripts\\core\\network\\webmsghandlermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\core\\network\\webmsghandlermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\scripts\\lifetimescope\\rootlifetimescope.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\lifetimescope\\rootlifetimescope.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\LifetimeScope\\RootLifetimeScope.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Scripts\\LifetimeScope\\RootLifetimeScope.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\scripts\\lifetimescope\\scene1_lifetimescope.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\lifetimescope\\scene1_lifetimescope.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\scripts\\action\\yourevent1\\youraction1msghandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\action\\yourevent1\\youraction1msghandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\scripts\\core\\interface\\imessagesender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\core\\interface\\imessagesender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\scripts\\core\\network\\webmessagesender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\core\\network\\webmessagesender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\scripts\\core\\network\\webmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\core\\network\\webmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Public\\InputService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Scripts\\Public\\InputService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:2:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Public\\InputService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:2:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Scripts\\Public\\InputService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -58,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -71,157 +31,28 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "ActionConfigSO.cs",
-              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Core\\ActionConfig\\ActionConfigSO.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Core\\ActionConfig\\ActionConfigSO.cs",
-              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Core\\ActionConfig\\ActionConfigSO.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Core\\ActionConfig\\ActionConfigSO.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAkwCAAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-24T03:20:53.794Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ActionConfigSOEditor.cs",
-              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Core\\ActionConfig\\ActionConfigSOEditor.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Core\\ActionConfig\\ActionConfigSOEditor.cs",
-              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Core\\ActionConfig\\ActionConfigSOEditor.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Core\\ActionConfig\\ActionConfigSOEditor.cs",
-              "ViewState": "AgIAAL8AAAAAAAAAAAAcwOAAAAAGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-24T03:20:06.809Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
               "Title": "Scene1_LifetimeScope.cs",
               "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\LifetimeScope\\Scene1_LifetimeScope.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\LifetimeScope\\Scene1_LifetimeScope.cs",
               "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\LifetimeScope\\Scene1_LifetimeScope.cs",
               "RelativeToolTip": "Assets\\Scripts\\LifetimeScope\\Scene1_LifetimeScope.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAIA1wBsAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAIwBoAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-24T03:12:22.963Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "RootLifetimeScope.cs",
-              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\LifetimeScope\\RootLifetimeScope.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\LifetimeScope\\RootLifetimeScope.cs",
-              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\LifetimeScope\\RootLifetimeScope.cs",
-              "RelativeToolTip": "Assets\\Scripts\\LifetimeScope\\RootLifetimeScope.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAADwvxYAAABXAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-24T03:11:47.539Z",
+              "WhenOpened": "2026-04-27T02:54:30.776Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "YourAction1.cs",
-              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Action\\YourEvent1\\YourAction1.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Action\\YourEvent1\\YourAction1.cs",
-              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Action\\YourEvent1\\YourAction1.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Action\\YourEvent1\\YourAction1.cs",
-              "ViewState": "AgIAAFEAAAAAAAAAAAAiwGYAAAAbAAAAAAAAAA==",
+              "Title": "RootLifetimeScope.cs",
+              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\LifetimeScope\\RootLifetimeScope.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\LifetimeScope\\RootLifetimeScope.cs",
+              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\LifetimeScope\\RootLifetimeScope.cs",
+              "RelativeToolTip": "Assets\\Scripts\\LifetimeScope\\RootLifetimeScope.cs",
+              "ViewState": "AgIAAGYAAAAAAAAAAAAiwA4AAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-24T02:33:18.404Z",
+              "WhenOpened": "2026-04-27T02:46:04.686Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "WebMessageSender.cs",
-              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Core\\NetWork\\WebMessageSender.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Core\\NetWork\\WebMessageSender.cs",
-              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Core\\NetWork\\WebMessageSender.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Core\\NetWork\\WebMessageSender.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAADwvwcAAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-24T02:31:48.447Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "IMessageSender.cs",
-              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Core\\Interface\\IMessageSender.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Core\\Interface\\IMessageSender.cs",
-              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Core\\Interface\\IMessageSender.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Core\\Interface\\IMessageSender.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAkAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-24T02:30:22.491Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "WebMessage.cs",
-              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Core\\NetWork\\WebMessage.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Core\\NetWork\\WebMessage.cs",
-              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Core\\NetWork\\WebMessage.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Core\\NetWork\\WebMessage.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAEAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-24T02:28:49.562Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "WebMsgHandlerManager.cs",
-              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Core\\NetWork\\WebMsgHandlerManager.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Core\\NetWork\\WebMsgHandlerManager.cs",
-              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Core\\NetWork\\WebMsgHandlerManager.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Core\\NetWork\\WebMsgHandlerManager.cs",
-              "ViewState": "AgIAADQAAAAAAAAAAAAtwFQAAAA/AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-24T02:28:40.808Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "YourAction1MsgHandler.cs",
-              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Action\\YourEvent1\\YourAction1MsgHandler.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Action\\YourEvent1\\YourAction1MsgHandler.cs",
-              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Action\\YourEvent1\\YourAction1MsgHandler.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Action\\YourEvent1\\YourAction1MsgHandler.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAowDUAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-24T01:46:52.406Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "InputService.cs",
-              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Public\\InputService.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Public\\InputService.cs",
-              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Public\\InputService.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Public\\InputService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-24T03:18:48.616Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "InputService.cs",
-              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Public\\InputService.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Public\\InputService.cs",
-              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Public\\InputService.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Public\\InputService.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAiwBAAAAB4AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-24T03:02:17.347Z"
             }
           ]
         }
