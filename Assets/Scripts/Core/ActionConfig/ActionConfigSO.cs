@@ -13,6 +13,9 @@ public class ActionConfigSO : ScriptableObject
     [Header("前端动作名")]
     public string actionName;
 
+    [Header("是否允许返回")]
+    public bool isLetBack = false;
+
     // ======================== 核心修复 ========================
     [Header("目标事件脚本文件（仅编辑器编辑用）")]
     [SerializeField]
@@ -30,6 +33,9 @@ public class ActionConfigSO : ScriptableObject
 
     [Header("Action订阅")]
     public List<ActionSubscribeBind> subscribeBinds = new();
+
+    [Header("依赖的ScriptableObject")]
+    public List<ScriptableObjectConfig> requiredSOs = new();
 
 #if UNITY_EDITOR
     // 编辑器中修改脚本时，自动同步类名
@@ -70,4 +76,24 @@ public class ActionSubscribeBind
     [ReadOnly] public string targetActionClassName;
     [ReadOnly] public string methodNameInTargetAction;
     [ReadOnly] public string localMethodName;
+}
+
+[Serializable]
+public class ScriptableObjectConfig
+{
+    [Header("给你的依赖一个名字")]
+    public string typeName;
+    
+    [Header("依赖的引用")]
+    public ScriptableObject soReference;
+
+#if UNITY_EDITOR
+    public void OnValidate()
+    {
+        if (soReference != null && string.IsNullOrEmpty(typeName))
+        {
+            typeName = soReference.GetType().Name;
+        }
+    }
+#endif
 }

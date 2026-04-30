@@ -10,10 +10,14 @@ public abstract class BaseAction : IBaseAction
 
     [Inject] protected IActionBus EventBus { get; private set; }
     [Inject] protected ILabelManager LabelManager { get; private set; }
+    [Inject] protected IMessageSender MessageSender { get; private set; }
+    [Inject] protected ActionStack ActionStack { get; private set; }
 
     protected ActionConfigSO Config { get; private set; }
 
     public IActionLabelController LabelCtrl { get; protected set; }
+
+    protected Dictionary<string, ScriptableObject> SOContainer { get; } = new();
 
     private readonly Dictionary<string, (string realMethodName, Action<object> action)> _methodMap = new();
     private List<IDisposable> _subscribeDisposables = new List<IDisposable>();
@@ -64,7 +68,99 @@ public abstract class BaseAction : IBaseAction
 
         BuildMethodBindingsFromConfig();
         AutoSubscribeFromConfig();
+        LoadSOsFromConfig();
         RegisterLabelController();
+        NotifyLetBackIfNeeded();
+    }
+
+    protected T GetSO<T>() where T : ScriptableObject
+    {
+        var key = typeof(T).Name;
+        if (SOContainer.TryGetValue(key, out var so))
+        {
+            return so as T;
+        }
+        return null;
+    }
+
+    protected T GetSO<T>(string key) where T : ScriptableObject
+    {
+        if (SOContainer.TryGetValue(key, out var so))
+        {
+            return so as T;
+        }
+        return null;
+    }
+
+    protected void LoadSO<T>() where T : ScriptableObject
+    {
+        var so = ActionConfigProvider.GetScriptableObjectByType(typeof(T)) as T;
+        if (so != null)
+        {
+            var key = typeof(T).Name;
+            SOContainer[key] = so;
+            Debug.Log($"【✅ 加载SO】{GetType().Name} 加载了 {typeof(T).Name}: {so.name}");
+        }
+        else
+        {
+            Debug.LogWarning($"【⚠️ 警告】{GetType().Name} 尝试加载 {typeof(T).Name} 但未找到SO");
+        }
+    }
+
+    private void LoadSOsFromConfig()
+    {
+        if (Config == null || Config.requiredSOs == null || Config.requiredSOs.Count == 0)
+        {
+            Debug.Log($"【⏭️ 跳过】{GetType().Name} 没有配置需要的ScriptableObject");
+            return;
+        }
+
+        foreach (var soConfig in Config.requiredSOs)
+        {
+            if (soConfig.soReference == null)
+            {
+                Debug.LogWarning($"【⚠️ 警告】{GetType().Name} 配置了一个空的ScriptableObject引用（key: {soConfig.typeName}）");
+                continue;
+            }
+
+            if (string.IsNullOrEmpty(soConfig.typeName))
+            {
+                Debug.LogWarning($"【⚠️ 警告】{GetType().Name} 配置的ScriptableObject没有设置字典key");
+                continue;
+            }
+
+            string key = soConfig.typeName;
+            if (!SOContainer.ContainsKey(key))
+            {
+                SOContainer[key] = soConfig.soReference;
+                Debug.Log($"【✅ 自动加载SO】{GetType().Name} 加载了 key='{key}': {soConfig.soReference.name}");
+            }
+            else
+            {
+                Debug.LogWarning($"【⚠️ 警告】{GetType().Name} 重复配置了相同的key: '{key}'");
+            }
+        }
+    }
+
+    private void NotifyLetBackIfNeeded()
+    {
+        if (Config == null || !Config.isLetBack) return;
+
+        if (ActionStack.IsAtBottom(this))
+        {
+            Debug.Log($"【⏭️ 跳过返回通知】{GetType().Name} 处于栈底，不显示返回按钮");
+            return;
+        }
+
+        if (MessageSender == null)
+        {
+            Debug.LogWarning($"【⚠️ 警告】{GetType().Name} 需要发送返回通知但 MessageSender 为 null");
+            return;
+        }
+
+        //MessageSender.SendCurrentMessage("action", "showBackButton", new { actionName = this.GetType().Name });
+        MessageSender.SendActionMessage("message", "DefaultAction","showBackButton", new {});
+        Debug.Log($"【📤 发送返回通知】{GetType().Name} 允许返回，已通知前端显示返回按钮");
     }
 
     private void AutoSubscribeFromConfig()
@@ -213,7 +309,7 @@ public abstract class BaseAction : IBaseAction
         }
     }
 
-    public void OnInitialize() { }
+    public virtual void OnInitialize() { }
 }
 
 public class EventMethodExecutedMessage

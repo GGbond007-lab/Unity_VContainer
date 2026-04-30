@@ -13,14 +13,16 @@ MonoBehaviour:
   m_Name: EventConfig_YourEvent1
   m_EditorClassIdentifier: Assembly-CSharp::EventConfigSO
   actionName: "\u4F60\u7684Action1"
+  isLetBack: 0
   targetEventScript: {fileID: 11500000, guid: 8d22636c3cff5ed4bb266503fdb053e7, type: 3}
+  targetEventClassName: YourAction1
   methodBinds:
   - enableWebFunc: 1
     webFuncName: "\u751F\u6210\u6807\u7B7E"
     unityFuncName: SpawnLabelList
     callBackEnable: 1
     callBackFuncName: SendCreateLabel
-  subscribeBinds:
-  - targetActionClassName: 
-    methodNameInTargetAction: 
-    localMethodName: 
+  subscribeBinds: []
+  requiredSOs:
+  - typeName: "ES1\u7684SO"
+    soReference: {fileID: 11400000, guid: d45118ab891e6f24199b66df4d84962b, type: 2}

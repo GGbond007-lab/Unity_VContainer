@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
+using VContainer.Unity;
 
 /// <summary>
 /// 你的Action：自己管理【接收】+【发送】
@@ -123,4 +124,11 @@ public class YourAction1 : BaseAction
             data: labelList
         );
     }
+
+    public  override void OnInitialize()
+    {
+      YourAction1SO yourAction1SO=  GetSO<YourAction1SO>("ES1的SO");
+        Debug.Log($"从SO获取的数据：Cube={yourAction1SO.Cube}, BoxCollider={yourAction1SO.BoxCollider},Cube的位置={yourAction1SO.Cube.transform.position}");
+    }
+
 }

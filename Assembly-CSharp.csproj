@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\Core\Interface\IActionBus.cs" />
     <Compile Include="Assets\Scripts\Action\SceneLoadedAction.cs" />
     <Compile Include="Assets\Scripts\StateMachine\ExampleStates.cs" />
+    <Compile Include="Assets\Scripts\Action\YourAction1\YourAction1SO.cs" />
     <Compile Include="Assets\Scripts\Core\Interface\IBaseAction.cs" />
     <Compile Include="Assets\Scripts\StateMachine\IState.cs" />
     <Compile Include="Assets\Scripts\Core\ActionConfig\ActionConfigProvider.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Assets\Scripts\Core\Interface\IDataSyncManager.cs" />
     <Compile Include="Assets\Scripts\Core\Action\BaseAction.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
+    <Compile Include="Assets\Scripts\ScenceManager.cs" />
     <Compile Include="Assets\Scripts\Core\ActionConfig\ActionConfigSO.cs" />
     <Compile Include="Assets\Scripts\Core\Action\ActionStack.cs" />
     <Compile Include="Assets\Scripts\Action\YourAction1\Label\LabelNewItem.cs" />

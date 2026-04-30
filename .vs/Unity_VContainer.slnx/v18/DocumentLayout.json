@@ -3,12 +3,24 @@
   "WorkspaceRootPath": "D:\\MyGitProject\\Unity_VContainer\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\LifetimeScope\\RootLifetimeScope.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Scripts\\LifetimeScope\\RootLifetimeScope.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\scripts\\action\\youraction1\\youraction1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\action\\youraction1\\youraction1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\scripts\\scencemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\scencemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\scripts\\action\\youraction1\\youraction1so.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\action\\youraction1\\youraction1so.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\scripts\\lifetimescope\\scene1_lifetimescope.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\lifetimescope\\scene1_lifetimescope.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\scripts\\lifetimescope\\rootlifetimescope.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\lifetimescope\\rootlifetimescope.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -31,6 +43,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "ScenceManager.cs",
+              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\ScenceManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\ScenceManager.cs",
+              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\ScenceManager.cs",
+              "RelativeToolTip": "Assets\\Scripts\\ScenceManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwkAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-30T03:27:04.071Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "YourAction1SO.cs",
+              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Action\\YourAction1\\YourAction1SO.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Action\\YourAction1\\YourAction1SO.cs",
+              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Action\\YourAction1\\YourAction1SO.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Action\\YourAction1\\YourAction1SO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAABNAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-30T02:26:58.409Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "Scene1_LifetimeScope.cs",
               "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\LifetimeScope\\Scene1_LifetimeScope.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\LifetimeScope\\Scene1_LifetimeScope.cs",
@@ -43,15 +81,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "RootLifetimeScope.cs",
               "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\LifetimeScope\\RootLifetimeScope.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\LifetimeScope\\RootLifetimeScope.cs",
               "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\LifetimeScope\\RootLifetimeScope.cs",
               "RelativeToolTip": "Assets\\Scripts\\LifetimeScope\\RootLifetimeScope.cs",
-              "ViewState": "AgIAAGYAAAAAAAAAAAAiwA4AAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAAEAAAAAAAAAAAAAAwA4AAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-27T02:46:04.686Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "YourAction1.cs",
+              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Action\\YourAction1\\YourAction1.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Action\\YourAction1\\YourAction1.cs",
+              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Action\\YourAction1\\YourAction1.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Action\\YourAction1\\YourAction1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-30T02:15:53.831Z",
               "EditorCaption": ""
             }
           ]

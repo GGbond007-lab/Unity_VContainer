@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -45,6 +45,20 @@ public static class ActionConfigProvider
             {
                 return config;
             }
+        }
+        return null;
+    }
+
+    public static ScriptableObject GetScriptableObjectByType(Type soType)
+    {
+        if (soType == null || !typeof(ScriptableObject).IsAssignableFrom(soType))
+            return null;
+
+        var allSOs = Resources.LoadAll<ScriptableObject>("");
+        foreach (var so in allSOs)
+        {
+            if (so.GetType() == soType || soType.IsAssignableFrom(so.GetType()))
+                return so;
         }
         return null;
     }
