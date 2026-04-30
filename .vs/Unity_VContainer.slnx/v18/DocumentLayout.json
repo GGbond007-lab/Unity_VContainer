@@ -3,8 +3,12 @@
   "WorkspaceRootPath": "D:\\MyGitProject\\Unity_VContainer\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\scripts\\action\\youraction1\\youraction1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\action\\youraction1\\youraction1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{74E0D3A7-19C5-40BE-F11E-E5A32DC37A5D}|Assembly-CSharp-Editor.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\scripts\\editor\\actioncreator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{74E0D3A7-19C5-40BE-F11E-E5A32DC37A5D}|Assembly-CSharp-Editor.csproj|solutionrelative:assets\\scripts\\editor\\actioncreator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Action\\YourAction1\\YourAction1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Scripts\\Action\\YourAction1\\YourAction1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\scripts\\scencemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -21,6 +25,14 @@
     {
       "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\scripts\\lifetimescope\\rootlifetimescope.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\lifetimescope\\rootlifetimescope.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:2:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Action\\YourAction1\\YourAction1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:2:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Assets\\Scripts\\Action\\YourAction1\\YourAction1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|d:\\mygitproject\\unity_vcontainer\\assets\\scripts\\core\\actionconfig\\actionconfigso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\core\\actionconfig\\actionconfigso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,7 +42,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -42,7 +54,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
+              "Title": "ActionCreator.cs",
+              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Editor\\ActionCreator.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Editor\\ActionCreator.cs",
+              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Editor\\ActionCreator.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Editor\\ActionCreator.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAAABEAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-30T09:11:21.796Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "ScenceManager.cs",
               "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\ScenceManager.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\ScenceManager.cs",
@@ -55,7 +80,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "YourAction1SO.cs",
               "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Action\\YourAction1\\YourAction1SO.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Action\\YourAction1\\YourAction1SO.cs",
@@ -68,7 +93,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Scene1_LifetimeScope.cs",
               "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\LifetimeScope\\Scene1_LifetimeScope.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\LifetimeScope\\Scene1_LifetimeScope.cs",
@@ -81,7 +106,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "RootLifetimeScope.cs",
               "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\LifetimeScope\\RootLifetimeScope.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\LifetimeScope\\RootLifetimeScope.cs",
@@ -94,7 +119,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 7,
+              "Title": "ActionConfigSO.cs",
+              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Core\\ActionConfig\\ActionConfigSO.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Core\\ActionConfig\\ActionConfigSO.cs",
+              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Core\\ActionConfig\\ActionConfigSO.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Core\\ActionConfig\\ActionConfigSO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwkAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-30T09:09:51.526Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "YourAction1.cs",
+              "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Action\\YourAction1\\YourAction1.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Action\\YourAction1\\YourAction1.cs",
+              "ToolTip": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Action\\YourAction1\\YourAction1.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Action\\YourAction1\\YourAction1.cs",
+              "ViewState": "AgIAAGUAAAAAAAAAAAAgwIEAAABDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-30T09:26:07.644Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "YourAction1.cs",
               "DocumentMoniker": "D:\\MyGitProject\\Unity_VContainer\\Assets\\Scripts\\Action\\YourAction1\\YourAction1.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Action\\YourAction1\\YourAction1.cs",
@@ -102,8 +153,7 @@
               "RelativeToolTip": "Assets\\Scripts\\Action\\YourAction1\\YourAction1.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-30T02:15:53.831Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-30T02:15:53.831Z"
             }
           ]
         }

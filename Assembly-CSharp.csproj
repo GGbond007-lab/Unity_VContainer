@@ -62,6 +62,7 @@
     <Compile Include="Assets\Scripts\StateMachine\StateMachineExample.cs" />
     <Compile Include="Assets\Scripts\Manager\SceneLoadManager.cs" />
     <Compile Include="Assets\Scripts\Core\Interface\ISceneLoadManager.cs" />
+    <Compile Include="Assets\Scripts\Action\TestNewAction\TestNewActionMsgHandler.cs" />
     <Compile Include="Assets\Scripts\Core\Interface\IActionBus.cs" />
     <Compile Include="Assets\Scripts\Action\SceneLoadedAction.cs" />
     <Compile Include="Assets\Scripts\StateMachine\ExampleStates.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Assets\Scripts\Core\ActionConfig\ActionConfigProvider.cs" />
     <Compile Include="Assets\Scripts\Core\Interface\IMessageSender.cs" />
     <Compile Include="Assets\Scripts\Action\YourAction1\YourAction1MsgHandler.cs" />
+    <Compile Include="Assets\Scripts\Action\TestNewAction\TestNewAction.cs" />
     <Compile Include="Assets\Scripts\LifetimeScope\Scene1_LifetimeScope.cs" />
     <Compile Include="Assets\Scripts\StateMachine\StateMachine.cs" />
     <Compile Include="Assets\Scripts\Core\Interface\IDataSyncManager.cs" />
