@@ -97,7 +97,7 @@ public class InputService : IInputService, ITickable
 
         if (Input.GetKeyDown(KeyCode.Alpha1))//新建事件YoueEvent1，同时新建对应事件和对应方法
         {
-            _msgManager.Receive(test1);
+            _msgManager.ReceiveMessageFromWeb(test1);
 
         }
         if (Input.GetKeyDown(KeyCode.Alpha0))

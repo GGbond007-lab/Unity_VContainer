@@ -32,7 +32,7 @@ public class WebMsgHandlerManager
     //        exec.OnExecute(funcName, data);
     //    }
     //}
-    public void Receive(string json)
+    public void ReceiveMessageFromWeb(string json)
     {
         try
         {
