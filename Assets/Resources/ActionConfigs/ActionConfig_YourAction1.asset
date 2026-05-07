@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c1f61c98e4998ec42b41c895e17d49da, type: 3}
-  m_Name: EventConfig_YourEvent1
-  m_EditorClassIdentifier: Assembly-CSharp::EventConfigSO
+  m_Name: ActionConfig_YourAction1
+  m_EditorClassIdentifier: Assembly-CSharp::ActionConfigSO
   actionName: "\u4F60\u7684Action1"
   isLetBack: 0
-  targetEventScript: {fileID: 11500000, guid: 8d22636c3cff5ed4bb266503fdb053e7, type: 3}
-  targetEventClassName: YourAction1
+  targetActionScript: {fileID: 11500000, guid: 8d22636c3cff5ed4bb266503fdb053e7, type: 3}
+  targetActionClassName: YourAction1
   methodBinds:
   - enableWebFunc: 1
     webFuncName: "\u751F\u6210\u6807\u7B7E"

@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public interface ILabelManager
 {
-    Task<GameObject> LoadLabelPrefab(string prefabKey);
+    UniTask<GameObject> LoadLabelPrefab(string prefabKey);
     ILabel CreateLabel(GameObject prefab, Transform parent = null);
     void ReleaseLabel(Component label);
     void ClearAllLabelsToPool();

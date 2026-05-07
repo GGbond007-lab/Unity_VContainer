@@ -1,19 +1,17 @@
 using VContainer;
 
-namespace VContainer.StateMachine
+
+public class StateMachineFactory
 {
-    public class StateMachineFactory
+    private readonly IObjectResolver resolver;
+
+    public StateMachineFactory(IObjectResolver resolver)
     {
-        private readonly IObjectResolver resolver;
+        this.resolver = resolver;
+    }
 
-        public StateMachineFactory(IObjectResolver resolver)
-        {
-            this.resolver = resolver;
-        }
-
-        public StateMachine Create()
-        {
-            return new StateMachine(resolver);
-        }
+    public StateMachine Create()
+    {
+        return new StateMachine(resolver);
     }
 }

@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1f61c98e4998ec42b41c895e17d49da, type: 3}
+  m_Name: ActionConfig_YourAction3
+  m_EditorClassIdentifier: Assembly-CSharp::ActionConfigSO
+  actionName: YourAction3
+  isLetBack: 1
+  targetActionScript: {fileID: 11500000, guid: c37aca48d3ef39c41a5144bfaeb2b634, type: 3}
+  targetActionClassName: YourAction3
+  methodBinds:
+  - enableWebFunc: 1
+    webFuncName: ExpPing
+    unityFuncName: ExpPing
+    callBackEnable: 1
+    callBackFuncName: ExpAfterPing
+  - enableWebFunc: 1
+    webFuncName: ExpReceiveData
+    unityFuncName: ExpReceiveData
+    callBackEnable: 1
+    callBackFuncName: ExpSendDataBack
+  - enableWebFunc: 1
+    webFuncName: ExpCreateLabel
+    unityFuncName: ExpCreateLabel
+    callBackEnable: 0
+    callBackFuncName: 
+  - enableWebFunc: 1
+    webFuncName: ExpClearLabels
+    unityFuncName: ExpClearLabels
+    callBackEnable: 0
+    callBackFuncName: 
+  subscribeBinds: []
+  requiredSOs: []

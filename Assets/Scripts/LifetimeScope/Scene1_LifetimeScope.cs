@@ -18,12 +18,12 @@ public class Scene1_LifetimeScope : LifetimeScope
 public class Scene1EntryPoint : IStartable
 {
     private readonly ILabelManager _labelManager;
-    private readonly IActionBus _eventBus;
+    private readonly IActionBus _actionBus;
 
-    public Scene1EntryPoint(ILabelManager labelManager, IActionBus eventBus)
+    public Scene1EntryPoint(ILabelManager labelManager, IActionBus actionBus)
     {
         _labelManager = labelManager;
-        _eventBus = eventBus;
+        _actionBus = actionBus;
     }
 
     public void Start()

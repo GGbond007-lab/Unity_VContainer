@@ -23,7 +23,7 @@ public class YourActionLabelController : IActionLabelController
         _rootGameObject = go;
         _root = go.transform;
 
-        var canvas = Object.FindObjectOfType<Canvas>();
+        var canvas = Object.FindFirstObjectByType<Canvas>();
         if (canvas != null)
             _root.SetParent(canvas.transform, false);
     }

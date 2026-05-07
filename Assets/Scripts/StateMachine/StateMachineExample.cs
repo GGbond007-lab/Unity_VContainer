@@ -7,12 +7,24 @@ using VContainer.StateMachine;
 
 public class StateMachineExample : MonoBehaviour
 {
-    [Inject]
     private StateMachineFactory stateMachineFactory;
     private StateMachine stateMachine;
 
+    [Inject]
+    public void Construct(StateMachineFactory factory)
+    {
+        stateMachineFactory = factory;
+    }
+
     private void Start()
     {
+        if (stateMachineFactory == null)
+        {
+            Debug.LogWarning("[StateMachineExample] StateMachineFactory is not injected. Skipping example setup.");
+            enabled = false;
+            return;
+        }
+
         // 创建状态机
         stateMachine = stateMachineFactory.Create();
         
@@ -53,11 +65,14 @@ public class StateMachineExample : MonoBehaviour
         //stateMachine.ChangeState("TaskStart");
         
         // 示例：使用异步状态转换模拟任务流程
-        ExampleTaskFlow();
+        ExampleTaskFlow().Forget();
     }
 
     private void Update()
     {
+        if (stateMachine == null)
+            return;
+
         // 同步更新
         stateMachine.Update();
         
@@ -112,7 +127,7 @@ public class StateMachineExample : MonoBehaviour
         //}
     }
     
-    private async void ExampleTaskFlow()
+    private async UniTaskVoid ExampleTaskFlow()
     {
         Debug.Log("=== 任务流程示例 ===");
         
@@ -150,6 +165,6 @@ public class StateMachineExample : MonoBehaviour
         
         // 等待2秒后重新开始
         await UniTask.Delay(2000);
-        ExampleTaskFlow();
+        ExampleTaskFlow().Forget();
     }
 }

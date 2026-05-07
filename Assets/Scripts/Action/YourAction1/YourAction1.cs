@@ -1,25 +1,15 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
-using VContainer;
-using VContainer.Unity;
+using UnityEngine.Scripting;
 
-/// <summary>
-/// 你的Action：自己管理【接收】+【发送】
-/// 解耦：只依赖 IMessageSender 接口，不依赖任何具体类
-/// </summary>
 public class YourAction1 : BaseAction
 {
-    private readonly ILabelManager _labelManager;
     private readonly YourActionLabelController _labelController;
-    // 发送器（VContainer自动注入）
-    private readonly IMessageSender _sender;
-    public YourAction1(ILabelManager labelManager, YourActionLabelController labelController, IMessageSender sender)
+
+    public YourAction1(YourActionLabelController labelController)
     {
-        _labelManager = labelManager;
         _labelController = labelController;
-        _sender = sender;
     }
 
     protected override void RegisterLabelController()
@@ -28,32 +18,23 @@ public class YourAction1 : BaseAction
         LabelCtrl = _labelController;
     }
 
-    public async void SpawnLabelList(object data)
+    [Preserve]
+    public async UniTask SpawnLabelList(object data)
     {
-
-        List<LabelData> dataList = null;
-
-        if (data is not JArray jArray)
-        {
+        if (!TryConvertData(data, out List<LabelData> dataList))
             return;
-        }
 
-        dataList = jArray.ToObject<List<LabelData>>();
-
-        // 空值判断
         if (dataList == null || dataList.Count == 0)
             return;
 
-
         if (LabelCtrl == null)
         {
-            Debug.LogError("LabelCtrl 未注入");
+            Debug.LogError("LabelCtrl is not injected.");
             return;
         }
 
         foreach (var itemData in dataList)
         {
-            // 🔥 用 identifyID 查找
             var existLabel = LabelCtrl.TryGetLabel(itemData.identifyID);
             if (existLabel != null)
             {
@@ -62,13 +43,13 @@ public class YourAction1 : BaseAction
                 continue;
             }
 
-            var prefab = await _labelManager.LoadLabelPrefab(itemData.prefabKey);
-            var newLabel = _labelManager.CreateLabel(prefab, LabelCtrl.RootTransform);
+            var prefab = await LabelManager.LoadLabelPrefab(itemData.prefabKey);
+            var newLabel = LabelManager.CreateLabel(prefab, LabelCtrl.RootTransform);
 
-            newLabel.SetData(itemData); newLabel.Refresh();
+            newLabel.SetData(itemData);
+            newLabel.Refresh();
             if (newLabel is LabelItem labelItem)
             {
-                // 绑定点击事件，闭包缓存当前 itemData，点击时能直接用
                 labelItem.SetClickEvent(() =>
                 {
                     Debug.Log(itemData.deviceName);
@@ -76,59 +57,62 @@ public class YourAction1 : BaseAction
             }
             LabelCtrl.AddLabel(newLabel);
         }
-        Debug.Log("1111SpawnLabelList方法被调用了！"); // 打印日志，确认方法被调用
+
+        Debug.Log("SpawnLabelList executed.");
     }
+
     public void OnCallBackSpawnLabelList()
     {
-        Debug.Log("OnCallBackSpawnLabelList回调方法被调用了！");
+        Debug.Log("OnCallBackSpawnLabelList executed.");
     }
-    public void PrintYourEvent1()
+
+    public void PrintYourAction1()
     {
-        Debug.Log($"【YourEvent1：Print1】:{ActionId}");
+        Debug.Log($"YourAction1 Print: {ActionId}");
     }
 
     public void ShowData(object data)
     {
-        Debug.Log($"【YourEvent1 展示数据】：{data}");
+        Debug.Log($"YourAction1 data: {data}");
     }
 
-
-
-    // Action 自己封装发送方法！
-    public void SendCreateLabel()
+    [Preserve]
+    public UniTask SendCreateLabel(object data)
     {
-        List<LabelData> labelList=new List<LabelData>();
-        labelList.Add(new LabelData
+        var labelList = new List<LabelData>
         {
-            identifyID = "Unity返回标签1",
-            prefabKey = "",
-            title = "Unity返回标签标题1",
-            desc = "Unity返回标签描述1",
-            deviceName = "Unity返回设备A"
-        });
-        // Action 自己决定：发什么格式、什么funcName
-        _sender.SendActionMessage(
+            new LabelData
+            {
+                identifyID = "UnityLabel1",
+                prefabKey = "",
+                title = "Unity label title 1",
+                desc = "Unity label desc 1",
+                deviceName = "Unity device A"
+            }
+        };
+
+        MessageSender.SendActionMessage(
             type: "message",
             actionName: "你的Action1",
             funcName: "生成标签",
             data: labelList
         );
+
+        return UniTask.CompletedTask;
     }
 
-    //当前这个方法和上面那个方法的区别是：上面那个是标记是哪个Action发送的的，下面这个是不带Action标记的，直接发一个funcName，适合一些全局通用的事件
     public void SendUpdateLabel(List<LabelData> labelList)
     {
-        _sender.SendCurrentMessage(
+        MessageSender.SendCurrentMessage(
             type: "message",
             funcName: "更新标签",
             data: labelList
         );
     }
 
-    public  override void OnInitialize()
+    public override void OnInitialize()
     {
-      YourAction1SO yourAction1SO=  GetSO<YourAction1SO>("ES1的SO");
-        Debug.Log($"从SO获取的数据：Cube={yourAction1SO.Cube}, BoxCollider={yourAction1SO.BoxCollider},Cube的位置={yourAction1SO.Cube.transform.position}");
+        YourAction1SO yourAction1SO = GetSO<YourAction1SO>("ES1的SO");
+        Debug.Log($"SO data: Cube={yourAction1SO.Cube}, BoxCollider={yourAction1SO.BoxCollider}, Cube position={yourAction1SO.Cube.transform.position}");
     }
-
 }

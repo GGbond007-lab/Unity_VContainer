@@ -17,8 +17,7 @@ public static class ActionConfigProvider
     {
         _configDict = new Dictionary<string, ActionConfigSO>();
 
-        // 注意：你文件夹是 EventConfigs 吗？如果是 ActionConfigs 就改这里
-        var configs = Resources.LoadAll<ActionConfigSO>("EventConfigs");
+        var configs = Resources.LoadAll<ActionConfigSO>("ActionConfigs");
         foreach (var c in configs)
         {
             if (!string.IsNullOrEmpty(c.actionName))
@@ -26,22 +25,22 @@ public static class ActionConfigProvider
         }
     }
 
-    public static ActionConfigSO GetConfig(string eventName)
+    public static ActionConfigSO GetConfig(string actionName)
     {
-        AllConfigs();
-        _configDict.TryGetValue(eventName, out var config);
+        if (_configDict == null)
+            LoadAllConfigs();
+
+        _configDict.TryGetValue(actionName, out var config);
         return config;
     }
 
-    // 🔥 🔥 🔥 已修复：用 targetEventClassName 查找
-    public static ActionConfigSO GetConfigByTargetScript(Type targetType)
+    public static ActionConfigSO GetConfigByTargetAction(Type targetType)
     {
         if (targetType == null) return null;
 
         foreach (var config in AllConfigs().Values)
         {
-            // 用 类名字符串 匹配，不再使用 MonoScript
-            if (config.targetEventClassName == targetType.FullName)
+            if (config.targetActionClassName == targetType.FullName)
             {
                 return config;
             }

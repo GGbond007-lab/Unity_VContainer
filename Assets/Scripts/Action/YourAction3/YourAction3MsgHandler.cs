@@ -2,14 +2,14 @@ using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class YourAction1MsgHandler : IActionMsgHandler
+public class YourAction3MsgHandler : IActionMsgHandler
 {
-    public string ActionName => "你的Action1"; // 和SO里的 actionName 一致
+    public string ActionName => "YourAction3";
 
     private readonly Func<Type, object[], IBaseAction> _actionFactory;
     private readonly ActionStack _actionStack;
 
-    public YourAction1MsgHandler(
+    public YourAction3MsgHandler(
         Func<Type, object[], IBaseAction> actionFactory,
         ActionStack actionStack)
     {
@@ -21,22 +21,22 @@ public class YourAction1MsgHandler : IActionMsgHandler
     {
         var currentAction = _actionStack.GetCurrentAction();
 
-        if (currentAction is YourAction1)
+        if (currentAction is YourAction3)
         {
             await currentAction.OnExecute(funcName, data);
             return;
         }
 
-        var created = _actionFactory(typeof(YourAction1), null);
+        var created = _actionFactory(typeof(YourAction3), null);
         if (created == null)
         {
-            Debug.LogError("Action工厂返回 null，无法创建 YourAction1");
+            Debug.LogError("Action factory returned null for YourAction3.");
             return;
         }
 
-        if (created is not YourAction1 newAction)
+        if (created is not YourAction3 newAction)
         {
-            Debug.LogError($"Action工厂创建的实例不能转换为 YourAction1，实际类型：{created.GetType().Name}");
+            Debug.LogError($"Action factory created {created.GetType().Name}, expected YourAction3.");
             return;
         }
 

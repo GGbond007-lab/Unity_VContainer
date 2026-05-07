@@ -1,42 +1,43 @@
 /// <summary>
-/// 事件栈：入栈、出栈、获取当前/上一个事件
+/// Action 栈：入栈、出栈、获取当前和上一个 Action
 /// </summary>
 public class ActionStack
 {
     private readonly System.Collections.Generic.Stack<IBaseAction> _stack = new();
     private IBaseAction _lastAction;
 
-    public void Push(IBaseAction evt)
+    public void Push(IBaseAction action)
     {
         if (_stack.Count > 0)
             _lastAction = _stack.Peek();
 
-        _stack.Push(evt);
-        evt.OnInitialize();
-        UnityEngine.Debug.Log($"[事件栈] 入栈  → 总数：{_stack.Count}");
+        _stack.Push(action);
+        action.OnInitialize();
+        action.OnPushed();
+        UnityEngine.Debug.Log($"[Action 栈] 入栈，当前总数：{_stack.Count}");
     }
 
     public IBaseAction Pop()
     {
         if (_stack.Count == 0) return null;
-        var evt = _stack.Pop();
-        evt.OnDestroy();
-        UnityEngine.Debug.Log($"[事件栈] 出栈  → 总数：{_stack.Count}");
-        return evt;
+        var action = _stack.Pop();
+        action.OnDestroy();
+        UnityEngine.Debug.Log($"[Action 栈] 出栈，当前总数：{_stack.Count}");
+        return action;
     }
-    // ✅ 加上这个方法，就能用 FindEvent<T> 了
+
     public T FindAction<T>() where T : class, IBaseAction
     {
-        // 遍历栈中所有事件，找到匹配的类型
-        foreach (var evt in _stack)
+        foreach (var action in _stack)
         {
-            if (evt is T matchEvent)
+            if (action is T matchAction)
             {
-                return matchEvent;
+                return matchAction;
             }
         }
         return null;
     }
+
     public IBaseAction GetCurrentAction() => _stack.Count > 0 ? _stack.Peek() : null;
     public IBaseAction GetLastAction() => _lastAction;
     public int Count => _stack.Count;
@@ -47,7 +48,7 @@ public class ActionStack
         var target = FindAction<T>();
         if (target == null)
         {
-            UnityEngine.Debug.LogWarning($"[事件栈] PopTo<{typeof(T).Name}> 失败：栈中未找到该Action");
+            UnityEngine.Debug.LogWarning($"[Action 栈] PopTo<{typeof(T).Name}> 失败：栈中未找到目标Action");
             return false;
         }
         return PopTo(target);
@@ -57,7 +58,7 @@ public class ActionStack
     {
         if (targetAction == null)
         {
-            UnityEngine.Debug.LogWarning("[事件栈] PopTo 失败：目标action为null");
+            UnityEngine.Debug.LogWarning("[Action 栈] PopTo 失败：目标Action为空");
             return false;
         }
 
@@ -74,12 +75,12 @@ public class ActionStack
 
         if (targetIndex < 0)
         {
-            UnityEngine.Debug.LogWarning($"[事件栈] PopTo 失败：目标action不在栈中");
+            UnityEngine.Debug.LogWarning("[Action 栈] PopTo 失败：目标Action不在栈中");
             return false;
         }
 
         int popCount = _stack.Count - targetIndex - 1;
-        UnityEngine.Debug.Log($"[事件栈] PopTo {targetAction.GetType().Name}：将弹出 {popCount} 个action");
+        UnityEngine.Debug.Log($"[Action 栈] PopTo {targetAction.GetType().Name}，将弹出 {popCount} 个Action");
 
         for (int i = 0; i < popCount; i++)
         {
@@ -92,7 +93,7 @@ public class ActionStack
     public void PopAll()
     {
         int count = _stack.Count;
-        UnityEngine.Debug.Log($"[事件栈] PopAll：共 {count} 个action");
+        UnityEngine.Debug.Log($"[Action 栈] PopAll，共 {count} 个Action");
         while (_stack.Count > 0)
         {
             Pop();

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using System.Threading.Tasks;
 
 public class LabelManager : ILabelManager
 {
@@ -14,17 +14,17 @@ public class LabelManager : ILabelManager
     // 当前活跃的标签
     private readonly HashSet<GameObject> _activeLabels = new();
 
-    // 记录：实例对象 → 来源预制体（修复 ReleaseLabel 报错）
+    // 记录：实例对象 -> 来源预制体
     private readonly Dictionary<GameObject, GameObject> _instanceToPrefab = new();
 
     // 加载 Addressable 预制体
-    public async Task<GameObject> LoadLabelPrefab(string prefabKey)
+    public async UniTask<GameObject> LoadLabelPrefab(string prefabKey)
     {
         if (_prefabCache.TryGetValue(prefabKey, out var prefab))
             return prefab;
 
         var handle = Addressables.LoadAssetAsync<GameObject>(prefabKey);
-        await handle.Task;
+        await handle.ToUniTask();
 
         _prefabCache[prefabKey] = handle.Result;
         return handle.Result;
@@ -46,11 +46,9 @@ public class LabelManager : ILabelManager
         _instanceToPrefab[obj] = prefab;
         _activeLabels.Add(obj);
 
-        // 直接获取 ILabel 组件返回
         return obj.GetComponent<ILabel>();
     }
 
-    // 释放标签回池（支持任意 Component）
     public void ReleaseLabel(Component component)
     {
         if (component == null) return;
@@ -59,12 +57,7 @@ public class LabelManager : ILabelManager
         if (!_activeLabels.Contains(obj)) return;
         _activeLabels.Remove(obj);
 
-        // ======================================================================
-        // 🔥【超级关键修复】回池必须解除父物体，否则会被旧控制器持有！
-        // ======================================================================
         obj.transform.SetParent(null, false);
-
-        // 隐藏
         obj.SetActive(false);
 
         if (_instanceToPrefab.TryGetValue(obj, out var prefab))
@@ -80,7 +73,6 @@ public class LabelManager : ILabelManager
         }
     }
 
-    // 清空所有活跃标签 → 全部回池
     public void ClearAllLabelsToPool()
     {
         var tempList = new List<GameObject>(_activeLabels);
@@ -93,7 +85,6 @@ public class LabelManager : ILabelManager
         _activeLabels.Clear();
     }
 
-    // 完全清空池（释放内存）
     public void ClearPoolCompletely()
     {
         ClearAllLabelsToPool();
@@ -109,7 +100,6 @@ public class LabelManager : ILabelManager
         _instanceToPrefab.Clear();
     }
 
-    // 调试：打印池状态
     public void DebugPoolStatus()
     {
         string log = "=== 标签对象池状态 ===\n";
@@ -119,11 +109,11 @@ public class LabelManager : ILabelManager
         int total = 0;
         foreach (var pair in _labelPool)
         {
-            log += $"{pair.Key.name} → 池数量：{pair.Value.Count}\n";
+            log += $"{pair.Key.name} -> 池数量：{pair.Value.Count}\n";
             total += pair.Value.Count;
         }
 
-        log += $"池内总闲置：{total}\n";
+        log += $"池内总闲置：{total}";
         Debug.Log(log);
     }
 }

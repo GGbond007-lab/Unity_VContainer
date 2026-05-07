@@ -17,14 +17,14 @@ public class ActionConfigSO : ScriptableObject
     public bool isLetBack = false;
 
     // ======================== 核心修复 ========================
-    [Header("目标事件脚本文件（仅编辑器编辑用）")]
+    [Header("目标Action脚本文件（仅编辑器编辑用）")]
     [SerializeField]
 #if UNITY_EDITOR
-    private MonoScript targetEventScript;
+    private MonoScript targetActionScript;
 #endif
 
-    [Header("自动生成的目标类名（运行时使用）")]
-    public string targetEventClassName; // 👈 打包后也存在！
+    [Header("自动生成的目标Action类名（运行时使用）")]
+    public string targetActionClassName;
 
     // ==========================================================
 
@@ -41,17 +41,17 @@ public class ActionConfigSO : ScriptableObject
     // 编辑器中修改脚本时，自动同步类名
     private void OnValidate()
     {
-        if (targetEventScript != null)
+        if (targetActionScript != null)
         {
-            Type type = targetEventScript.GetClass();
+            Type type = targetActionScript.GetClass();
             if (type != null)
             {
-                targetEventClassName = type.FullName; // 命名空间+类名
+                targetActionClassName = type.FullName; // 命名空间+类名
             }
         }
         else
         {
-            targetEventClassName = string.Empty;
+            targetActionClassName = string.Empty;
         }
     }
 #endif
