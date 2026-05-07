@@ -119,7 +119,7 @@ public class {_actionName} : BaseAction
 ";
         }
 
-        private string GetMsgHandlerTemplate()
+               private string GetMsgHandlerTemplate()
         {
             return $@"using UnityEngine;
 using System;
@@ -128,11 +128,11 @@ public class {_actionName}MsgHandler : IActionMsgHandler
 {{
     public string ActionName => ""{_actionName}"";
 
-    private readonly Func<Type, IBaseAction> _actionFactory;
+    private readonly Func<Type,object[], IBaseAction> _actionFactory;
     private readonly ActionStack _actionStack;
 
     public {_actionName}MsgHandler(
-        Func<Type, IBaseAction> actionFactory,
+        Func<Type, object[],IBaseAction> actionFactory,
         ActionStack actionStack)
     {{
         _actionFactory = actionFactory;
@@ -149,7 +149,7 @@ public class {_actionName}MsgHandler : IActionMsgHandler
             return;
         }}
 
-        var created = _actionFactory(typeof({_actionName}));
+        var created = _actionFactory(typeof({_actionName}),null);
         if (created == null)
         {{
             Debug.LogError(""事件工厂返回 null，无法创建 {_actionName}"");
