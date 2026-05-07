@@ -76,12 +76,23 @@ public class RootLifetimeScope : LifetimeScope
         // 输入服务
         builder.RegisterEntryPoint<InputService>().As<IInputService>();
 
-        builder.Register<Func<Type, IBaseAction>>(container =>
+        //builder.Register<Func<Type, IBaseAction>>(container =>
+        //{
+        //    return actionType =>
+        //    {
+        //        // 使用容器解析以保证依赖注入
+        //        var evt = (IBaseAction)container.Resolve(actionType);
+        //        var stack = container.Resolve<ActionStack>();
+        //        stack.Push(evt);
+        //        return evt;
+        //    };
+        //}, Lifetime.Scoped);
+        builder.Register<Func<Type, object[], IBaseAction>>(container =>
         {
-            return actionType =>
+            return (actionType, args) =>
             {
-                // 使用容器解析以保证依赖注入
-                var evt = (IBaseAction)container.Resolve(actionType);
+                // 支持传构造函数参数！
+                var evt = (IBaseAction)container.Resolve(actionType, args);
                 var stack = container.Resolve<ActionStack>();
                 stack.Push(evt);
                 return evt;

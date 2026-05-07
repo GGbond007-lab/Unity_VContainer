@@ -5,11 +5,11 @@ public class YourAction1MsgHandler : IActionMsgHandler
 {
     public string ActionName => "你的Action1"; // 和SO里的 actionName 一致
 
-    private readonly Func<Type, IBaseAction> _actionFactory;
+    private readonly Func<Type, object[]    , IBaseAction> _actionFactory;
     private readonly IActionBus _actionBus;
     private readonly ActionStack _actionStack;
     public YourAction1MsgHandler(
-        Func<Type, IBaseAction> actionFactory,
+        Func<Type, object[],IBaseAction> actionFactory,
         IActionBus actionBus,
         ActionStack actionStack)
     {
@@ -31,7 +31,7 @@ public class YourAction1MsgHandler : IActionMsgHandler
             return;
         }
 
-        var created = _actionFactory(typeof(YourAction1));
+        var created = _actionFactory(typeof(YourAction1), null);
         if (created == null)
         {
             Debug.LogError("事件工厂返回 null，无法创建 YourEvent1");

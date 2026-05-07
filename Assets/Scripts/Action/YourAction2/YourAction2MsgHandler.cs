@@ -9,11 +9,11 @@ public class YourAction2MsgHandler: IActionMsgHandler
     #endregion
 
     #region Step2 注入事件工厂和事件总线
-    private readonly Func<Type, IBaseAction> _eventFactory;
+    private readonly Func<Type, object[], IBaseAction> _eventFactory;
     private readonly IActionBus _eventBus;
 
     public YourAction2MsgHandler(
-        Func<Type, IBaseAction> eventFactory,
+        Func<Type, object[], IBaseAction> eventFactory,
         IActionBus eventBus)
     {
         _eventFactory = eventFactory;
@@ -25,7 +25,7 @@ public class YourAction2MsgHandler: IActionMsgHandler
     public void Handle(string funcName, object data)
     {
         // 1. 创建事件（固定流程）
-        var evt = _eventFactory(typeof(YourAction2)) as YourAction2;
+        var evt = _eventFactory(typeof(YourAction2), null) as YourAction2;
         if (evt == null)
             return;
 
