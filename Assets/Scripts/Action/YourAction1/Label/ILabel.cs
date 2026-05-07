@@ -1,4 +1,4 @@
-﻿public interface ILabel
+public interface ILabel
 {
     string identifyID { get; }
     void SetData(object data);

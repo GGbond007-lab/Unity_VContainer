@@ -2,43 +2,56 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class LabelManager : ILabelManager
 {
-    // 预制体缓存
+    private readonly Dictionary<string, AsyncOperationHandle<GameObject>> _prefabHandles = new();
     private readonly Dictionary<string, GameObject> _prefabCache = new();
-
-    // 对象池：key = 预制体, value = 池栈
     private readonly Dictionary<GameObject, Stack<GameObject>> _labelPool = new();
-
-    // 当前活跃的标签
     private readonly HashSet<GameObject> _activeLabels = new();
-
-    // 记录：实例对象 -> 来源预制体
     private readonly Dictionary<GameObject, GameObject> _instanceToPrefab = new();
 
-    // 加载 Addressable 预制体
     public async UniTask<GameObject> LoadLabelPrefab(string prefabKey)
     {
+        if (string.IsNullOrWhiteSpace(prefabKey))
+        {
+            Debug.LogError("[LabelManager] Label prefab key is empty.");
+            return null;
+        }
+
         if (_prefabCache.TryGetValue(prefabKey, out var prefab))
             return prefab;
 
         var handle = Addressables.LoadAssetAsync<GameObject>(prefabKey);
         await handle.ToUniTask();
 
+        if (handle.Status != AsyncOperationStatus.Succeeded || handle.Result == null)
+        {
+            Debug.LogError($"[LabelManager] Failed to load label prefab: {prefabKey}");
+            if (handle.IsValid())
+                Addressables.Release(handle);
+            return null;
+        }
+
+        _prefabHandles[prefabKey] = handle;
         _prefabCache[prefabKey] = handle.Result;
         return handle.Result;
     }
 
     public ILabel CreateLabel(GameObject prefab, Transform parent = null)
     {
-        if (prefab == null) return null;
+        if (prefab == null)
+            return null;
 
-        GameObject obj = null;
-        if (_labelPool.TryGetValue(prefab, out var stack) && stack.Count > 0)
-            obj = stack.Pop();
-        else
-            obj = Object.Instantiate(prefab);
+        var obj = GetOrCreateLabelObject(prefab);
+        var label = obj.GetComponent<ILabel>();
+        if (label == null)
+        {
+            Debug.LogError($"[LabelManager] Prefab '{prefab.name}' does not contain a component implementing ILabel.");
+            Object.Destroy(obj);
+            return null;
+        }
 
         obj.transform.SetParent(parent, false);
         obj.SetActive(true);
@@ -46,26 +59,30 @@ public class LabelManager : ILabelManager
         _instanceToPrefab[obj] = prefab;
         _activeLabels.Add(obj);
 
-        return obj.GetComponent<ILabel>();
+        return label;
     }
 
     public void ReleaseLabel(Component component)
     {
-        if (component == null) return;
-        GameObject obj = component.gameObject;
+        if (component == null)
+            return;
 
-        if (!_activeLabels.Contains(obj)) return;
-        _activeLabels.Remove(obj);
+        var obj = component.gameObject;
+        if (!_activeLabels.Remove(obj))
+            return;
 
         obj.transform.SetParent(null, false);
         obj.SetActive(false);
 
         if (_instanceToPrefab.TryGetValue(obj, out var prefab))
         {
-            if (!_labelPool.ContainsKey(prefab))
-                _labelPool[prefab] = new Stack<GameObject>();
+            if (!_labelPool.TryGetValue(prefab, out var stack))
+            {
+                stack = new Stack<GameObject>();
+                _labelPool[prefab] = stack;
+            }
 
-            _labelPool[prefab].Push(obj);
+            stack.Push(obj);
         }
         else
         {
@@ -82,6 +99,7 @@ public class LabelManager : ILabelManager
             if (comp != null)
                 ReleaseLabel(comp);
         }
+
         _activeLabels.Clear();
     }
 
@@ -92,28 +110,46 @@ public class LabelManager : ILabelManager
         foreach (var stack in _labelPool.Values)
         {
             foreach (var obj in stack)
+            {
                 Object.Destroy(obj);
+            }
         }
 
         _labelPool.Clear();
         _prefabCache.Clear();
         _instanceToPrefab.Clear();
+
+        foreach (var handle in _prefabHandles.Values)
+        {
+            if (handle.IsValid())
+                Addressables.Release(handle);
+        }
+
+        _prefabHandles.Clear();
     }
 
     public void DebugPoolStatus()
     {
-        string log = "=== 标签对象池状态 ===\n";
-        log += $"活跃标签：{_activeLabels.Count}\n";
-        log += $"池内预制体类型：{_labelPool.Count}\n";
+        var log = "=== Label Pool Status ===\n";
+        log += $"Active labels: {_activeLabels.Count}\n";
+        log += $"Pooled prefab types: {_labelPool.Count}\n";
 
-        int total = 0;
+        var total = 0;
         foreach (var pair in _labelPool)
         {
-            log += $"{pair.Key.name} -> 池数量：{pair.Value.Count}\n";
+            log += $"{pair.Key.name} -> pooled count: {pair.Value.Count}\n";
             total += pair.Value.Count;
         }
 
-        log += $"池内总闲置：{total}";
+        log += $"Total pooled labels: {total}";
         Debug.Log(log);
+    }
+
+    private GameObject GetOrCreateLabelObject(GameObject prefab)
+    {
+        if (_labelPool.TryGetValue(prefab, out var stack) && stack.Count > 0)
+            return stack.Pop();
+
+        return Object.Instantiate(prefab);
     }
 }

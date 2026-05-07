@@ -19,6 +19,7 @@ namespace ActionSystem.Editor
 
         public void OnPreprocessBuild(BuildReport report)
         {
+            ThrowIfValidationFails();
             ActionRegistryGenerator.GenerateSilently();
             Debug.Log("[ActionRegistryAutoGenerateHook] Generated ActionRegistry before build.");
         }
@@ -28,8 +29,31 @@ namespace ActionSystem.Editor
             if (state != PlayModeStateChange.ExitingEditMode)
                 return;
 
+            LogValidationErrors();
             ActionRegistryGenerator.GenerateSilently();
             Debug.Log("[ActionRegistryAutoGenerateHook] Generated ActionRegistry before entering Play Mode.");
+        }
+
+        private static void LogValidationErrors()
+        {
+            foreach (var error in ActionSystemValidator.Validate())
+            {
+                Debug.LogError($"[ActionSystemValidator] {error}");
+            }
+        }
+
+        private static void ThrowIfValidationFails()
+        {
+            var errors = ActionSystemValidator.Validate();
+            if (errors.Count == 0)
+                return;
+
+            foreach (var error in errors)
+            {
+                Debug.LogError($"[ActionSystemValidator] {error}");
+            }
+
+            throw new BuildFailedException($"Action System validation failed with {errors.Count} error(s).");
         }
     }
 }

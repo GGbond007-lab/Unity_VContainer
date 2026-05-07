@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 111311084}
   - component: {fileID: 111311083}
   m_Layer: 0
-  m_Name: ScenceManager
+  m_Name: SceneManagerBinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 68c10006ab56bdb4ba31e4c3cf265301, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
+  m_EditorClassIdentifier: Assembly-CSharp::SceneManagerBinder
   ya1config: {fileID: 11400000, guid: d45118ab891e6f24199b66df4d84962b, type: 2}
 --- !u!4 &111311084
 Transform:

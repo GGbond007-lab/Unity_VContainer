@@ -1,16 +1,25 @@
-﻿using Newtonsoft.Json;
+using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
 
 /// <summary>
-/// Web 格式消息发送器（实现解耦的发送接口）
-/// 职责：仅构造标准格式JSON + 输出/网络发送
+/// Serializes web-facing messages and sends them through the configured transport.
 /// </summary>
 public class WebMessageSender : IMessageSender
 {
-    /// <summary>
-    /// 发送带 actionName 的标准格式（WebMessageEFD）
-    /// </summary>
+    private readonly IMessageTransport _transport;
+
+    public WebMessageSender(IMessageTransport transport)
+    {
+        _transport = transport;
+    }
+
     public void SendActionMessage(string type, string actionName, string funcName, object data)
+    {
+        SendActionMessageAsync(type, actionName, funcName, data).Forget();
+    }
+
+    public UniTask SendActionMessageAsync(string type, string actionName, string funcName, object data)
     {
         var msg = new WebMessageEFD
         {
@@ -20,17 +29,17 @@ public class WebMessageSender : IMessageSender
             data = data
         };
 
-        string json = JsonConvert.SerializeObject(msg, Formatting.Indented);
-        Debug.Log($"<color=green>[SEND]</color> 发送指定Action：{actionName} | {funcName}\n{json}");
-
-        //WebSocket.Send(json) / 对接TCP/HTTP
+        var json = JsonConvert.SerializeObject(msg, Formatting.Indented);
+        Debug.Log($"<color=green>[SEND]</color> Action: {actionName} | {funcName}\n{json}");
+        return _transport.SendAsync(json);
     }
 
-    /// <summary>
-    /// 发送不带 actionName 的格式（WebMessageFD）
-    /// </summary>
-
     public void SendCurrentMessage(string type, string funcName, object data)
+    {
+        SendCurrentMessageAsync(type, funcName, data).Forget();
+    }
+
+    public UniTask SendCurrentMessageAsync(string type, string funcName, object data)
     {
         var msg = new WebMessageFD
         {
@@ -39,9 +48,24 @@ public class WebMessageSender : IMessageSender
             data = data
         };
 
-        string json = JsonConvert.SerializeObject(msg, Formatting.Indented);
-        Debug.Log($"<color=green>[SEND]</color> 发送当前Action：{funcName}\n{json}");
+        var json = JsonConvert.SerializeObject(msg, Formatting.Indented);
+        Debug.Log($"<color=green>[SEND]</color> Current Action: {funcName}\n{json}");
+        return _transport.SendAsync(json);
+    }
 
-        //WebSocket.Send(json)
+    public void SendError(ActionExecutionResult result)
+    {
+        SendErrorAsync(result).Forget();
+    }
+
+    public UniTask SendErrorAsync(ActionExecutionResult result)
+    {
+        if (result == null || result.Success)
+            return UniTask.CompletedTask;
+
+        var response = WebErrorResponse.FromResult(result);
+        var json = JsonConvert.SerializeObject(response, Formatting.Indented);
+        Debug.LogError($"<color=red>[SEND ERROR]</color> {response.code}: {response.message}\n{json}");
+        return _transport.SendAsync(json);
     }
 }

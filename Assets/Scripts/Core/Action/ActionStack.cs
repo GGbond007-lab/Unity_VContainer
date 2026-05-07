@@ -1,102 +1,284 @@
-/// <summary>
-/// Action 栈：入栈、出栈、获取当前和上一个 Action
-/// </summary>
-public class ActionStack
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+public enum ActionStackState
 {
-    private readonly System.Collections.Generic.Stack<IBaseAction> _stack = new();
+    Idle,
+    Pushing,
+    Popping,
+    Clearing
+}
+
+public enum ActionPushPolicy
+{
+    AllowDuplicates,
+    RejectSameTypeOnTop,
+    BringExistingToTop
+}
+
+public sealed class ActionStack
+{
+    private readonly Stack<IBaseAction> _stack = new();
+    private readonly object _sync = new();
     private IBaseAction _lastAction;
+
+    public ActionStackState State { get; private set; } = ActionStackState.Idle;
+    public bool IsBusy => State != ActionStackState.Idle;
+    public int Count
+    {
+        get
+        {
+            lock (_sync)
+            {
+                return _stack.Count;
+            }
+        }
+    }
+
+    public ActionExecutionResult TryPush(
+        IBaseAction action,
+        ActionPushPolicy policy = ActionPushPolicy.RejectSameTypeOnTop)
+    {
+        if (action == null)
+        {
+            return ActionExecutionResult.Fail(ActionErrorCode.ExecutionFailed, "Cannot push a null action.");
+        }
+
+        ActionExecutionResult result;
+        IBaseAction actionToDestroy = null;
+        IBaseAction actionToInitialize = null;
+        List<IBaseAction> poppedActions = null;
+
+        lock (_sync)
+        {
+            if (IsBusy)
+            {
+                return ActionExecutionResult.Fail(
+                    ActionErrorCode.ActionBusy,
+                    $"ActionStack is busy: {State}.",
+                    action.GetType().Name);
+            }
+
+            State = ActionStackState.Pushing;
+            try
+            {
+                if (policy == ActionPushPolicy.RejectSameTypeOnTop &&
+                    _stack.Count > 0 &&
+                    _stack.Peek().GetType() == action.GetType())
+                {
+                    actionToDestroy = action;
+                    result = ActionExecutionResult.Fail(
+                        ActionErrorCode.DuplicateAction,
+                        $"{action.GetType().Name} is already on top.",
+                        action.GetType().Name);
+                }
+                else if (policy == ActionPushPolicy.BringExistingToTop)
+                {
+                    var existing = FindActionUnsafe(action.GetType());
+                    if (existing != null)
+                    {
+                        actionToDestroy = action;
+                        PopToUnsafe(existing, out poppedActions);
+                        result = ActionExecutionResult.Ok(existing.GetType().Name);
+                    }
+                    else
+                    {
+                        if (_stack.Count > 0)
+                            _lastAction = _stack.Peek();
+
+                        _stack.Push(action);
+                        actionToInitialize = action;
+                        Debug.Log($"[ActionStack] Push {action.GetType().Name}, count={_stack.Count}");
+                        result = ActionExecutionResult.Ok(action.GetType().Name);
+                    }
+                }
+                else
+                {
+                    if (_stack.Count > 0)
+                        _lastAction = _stack.Peek();
+
+                    _stack.Push(action);
+                    actionToInitialize = action;
+                    Debug.Log($"[ActionStack] Push {action.GetType().Name}, count={_stack.Count}");
+                    result = ActionExecutionResult.Ok(action.GetType().Name);
+                }
+            }
+            finally
+            {
+                State = ActionStackState.Idle;
+            }
+        }
+
+        actionToDestroy?.OnDestroy();
+        DestroyActions(poppedActions);
+
+        if (actionToInitialize != null)
+        {
+            actionToInitialize.OnInitialize();
+            actionToInitialize.OnPushed();
+        }
+
+        return result;
+    }
 
     public void Push(IBaseAction action)
     {
-        if (_stack.Count > 0)
-            _lastAction = _stack.Peek();
-
-        _stack.Push(action);
-        action.OnInitialize();
-        action.OnPushed();
-        UnityEngine.Debug.Log($"[Action 栈] 入栈，当前总数：{_stack.Count}");
+        TryPush(action);
     }
 
     public IBaseAction Pop()
     {
-        if (_stack.Count == 0) return null;
-        var action = _stack.Pop();
+        IBaseAction action;
+        lock (_sync)
+        {
+            if (_stack.Count == 0 || IsBusy)
+                return null;
+
+            State = ActionStackState.Popping;
+            try
+            {
+                action = _stack.Pop();
+                Debug.Log($"[ActionStack] Pop {action.GetType().Name}, count={_stack.Count}");
+            }
+            finally
+            {
+                State = ActionStackState.Idle;
+            }
+        }
+
         action.OnDestroy();
-        UnityEngine.Debug.Log($"[Action 栈] 出栈，当前总数：{_stack.Count}");
         return action;
     }
 
     public T FindAction<T>() where T : class, IBaseAction
     {
-        foreach (var action in _stack)
+        lock (_sync)
         {
-            if (action is T matchAction)
-            {
-                return matchAction;
-            }
+            return _stack.OfType<T>().FirstOrDefault();
         }
-        return null;
     }
 
-    public IBaseAction GetCurrentAction() => _stack.Count > 0 ? _stack.Peek() : null;
-    public IBaseAction GetLastAction() => _lastAction;
-    public int Count => _stack.Count;
-    public bool IsAtBottom(IBaseAction action) => _stack.Count > 0 && _stack.Peek() == action && _stack.Count == 1;
+    public IBaseAction GetCurrentAction()
+    {
+        lock (_sync)
+        {
+            return _stack.Count > 0 ? _stack.Peek() : null;
+        }
+    }
+
+    public IBaseAction GetLastAction()
+    {
+        lock (_sync)
+        {
+            return _lastAction;
+        }
+    }
+
+    public bool IsAtBottom(IBaseAction action)
+    {
+        lock (_sync)
+        {
+            return _stack.Count == 1 && _stack.Peek() == action;
+        }
+    }
 
     public bool PopTo<T>() where T : class, IBaseAction
     {
-        var target = FindAction<T>();
-        if (target == null)
-        {
-            UnityEngine.Debug.LogWarning($"[Action 栈] PopTo<{typeof(T).Name}> 失败：栈中未找到目标Action");
-            return false;
-        }
-        return PopTo(target);
+        return PopTo(FindAction<T>());
     }
 
     public bool PopTo(IBaseAction targetAction)
     {
         if (targetAction == null)
-        {
-            UnityEngine.Debug.LogWarning("[Action 栈] PopTo 失败：目标Action为空");
             return false;
-        }
 
-        var tempList = new System.Collections.Generic.List<IBaseAction>(_stack);
-        int targetIndex = -1;
-        for (int i = 0; i < tempList.Count; i++)
+        List<IBaseAction> poppedActions;
+        lock (_sync)
         {
-            if (tempList[i] == targetAction)
+            if (IsBusy)
+                return false;
+
+            State = ActionStackState.Popping;
+            try
             {
-                targetIndex = i;
-                break;
+                if (!PopToUnsafe(targetAction, out poppedActions))
+                    return false;
+            }
+            finally
+            {
+                State = ActionStackState.Idle;
             }
         }
 
-        if (targetIndex < 0)
-        {
-            UnityEngine.Debug.LogWarning("[Action 栈] PopTo 失败：目标Action不在栈中");
-            return false;
-        }
-
-        int popCount = _stack.Count - targetIndex - 1;
-        UnityEngine.Debug.Log($"[Action 栈] PopTo {targetAction.GetType().Name}，将弹出 {popCount} 个Action");
-
-        for (int i = 0; i < popCount; i++)
-        {
-            Pop();
-        }
-
+        DestroyActions(poppedActions);
         return true;
     }
 
     public void PopAll()
     {
-        int count = _stack.Count;
-        UnityEngine.Debug.Log($"[Action 栈] PopAll，共 {count} 个Action");
-        while (_stack.Count > 0)
+        List<IBaseAction> poppedActions = new();
+        lock (_sync)
         {
-            Pop();
+            if (IsBusy)
+                return;
+
+            State = ActionStackState.Clearing;
+            try
+            {
+                while (_stack.Count > 0)
+                {
+                    poppedActions.Add(_stack.Pop());
+                }
+            }
+            finally
+            {
+                State = ActionStackState.Idle;
+            }
+        }
+
+        DestroyActions(poppedActions);
+    }
+
+    private IBaseAction FindActionUnsafe(System.Type actionType)
+    {
+        foreach (var action in _stack)
+        {
+            if (action.GetType() == actionType)
+                return action;
+        }
+
+        return null;
+    }
+
+    private bool PopToUnsafe(IBaseAction targetAction)
+    {
+        return PopToUnsafe(targetAction, out _);
+    }
+
+    private bool PopToUnsafe(IBaseAction targetAction, out List<IBaseAction> poppedActions)
+    {
+        poppedActions = new List<IBaseAction>();
+
+        if (!_stack.Contains(targetAction))
+            return false;
+
+        while (_stack.Count > 0 && _stack.Peek() != targetAction)
+        {
+            poppedActions.Add(_stack.Pop());
+        }
+
+        return true;
+    }
+
+    private static void DestroyActions(IEnumerable<IBaseAction> actions)
+    {
+        if (actions == null)
+            return;
+
+        foreach (var action in actions)
+        {
+            action?.OnDestroy();
         }
     }
 }

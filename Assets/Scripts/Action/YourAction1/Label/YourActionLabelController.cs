@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class YourActionLabelController : IActionLabelController
@@ -62,7 +62,7 @@ public class YourActionLabelController : IActionLabelController
         }
     }
 
-    // 🔥 根据 identifyID 查找标签
+    // Finds an existing label by identifyID.
     public ILabel TryGetLabel(string identifyID)
     {
         foreach (var label in _labels)

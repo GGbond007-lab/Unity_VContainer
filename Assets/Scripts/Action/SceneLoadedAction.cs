@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 
 /// <summary>
 /// 场景加载完成 Action

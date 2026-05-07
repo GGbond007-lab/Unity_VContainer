@@ -16,14 +16,6 @@ public static partial class ActionRegistry
         }
     }
 
-    public static void RegisterHandlers(IContainerBuilder builder)
-    {
-        foreach (var type in HandlerTypes)
-        {
-            builder.Register(type, Lifetime.Scoped).AsImplementedInterfaces();
-        }
-    }
-
     public static void RegisterLabelControllers(IContainerBuilder builder)
     {
         foreach (var type in LabelControllerTypes)

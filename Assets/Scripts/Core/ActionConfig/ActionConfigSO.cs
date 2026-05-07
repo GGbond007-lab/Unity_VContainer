@@ -1,4 +1,4 @@
-﻿﻿using System;
+using System;
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
@@ -7,46 +7,42 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-[CreateAssetMenu(fileName = "ActionConfig_", menuName = "Action系统/Action配置")]
+[CreateAssetMenu(fileName = "ActionConfig_", menuName = "Action System/Action Config")]
 public class ActionConfigSO : ScriptableObject
 {
-    [Header("前端动作名")]
+    [Header("Frontend action name")]
     public string actionName;
 
-    [Header("是否允许返回")]
-    public bool isLetBack = false;
+    [Header("Show back button when pushed")]
+    public bool isLetBack;
 
-    // ======================== 核心修复 ========================
-    [Header("目标Action脚本文件（仅编辑器编辑用）")]
+    [Header("Target Action script (Editor only)")]
     [SerializeField]
 #if UNITY_EDITOR
     private MonoScript targetActionScript;
 #endif
 
-    [Header("自动生成的目标Action类名（运行时使用）")]
+    [Header("Generated target Action class name")]
     public string targetActionClassName;
 
-    // ==========================================================
-
-    [Header("方法绑定")]
+    [Header("Method bindings")]
     public List<ActionMethodBind> methodBinds = new();
 
-    [Header("Action订阅")]
+    [Header("Action subscriptions")]
     public List<ActionSubscribeBind> subscribeBinds = new();
 
-    [Header("依赖的ScriptableObject")]
+    [Header("Required ScriptableObjects")]
     public List<ScriptableObjectConfig> requiredSOs = new();
 
 #if UNITY_EDITOR
-    // 编辑器中修改脚本时，自动同步类名
     private void OnValidate()
     {
         if (targetActionScript != null)
         {
-            Type type = targetActionScript.GetClass();
+            var type = targetActionScript.GetClass();
             if (type != null)
             {
-                targetActionClassName = type.FullName; // 命名空间+类名
+                targetActionClassName = type.FullName;
             }
         }
         else
@@ -65,7 +61,7 @@ public class ActionMethodBind
 
     [ReadOnly] public string unityFuncName;
 
-    public bool callBackEnable = false;
+    public bool callBackEnable;
 
     [ReadOnly] public string callBackFuncName;
 }
@@ -81,10 +77,10 @@ public class ActionSubscribeBind
 [Serializable]
 public class ScriptableObjectConfig
 {
-    [Header("给你的依赖一个名字")]
+    [Header("Dependency key")]
     public string typeName;
-    
-    [Header("依赖的引用")]
+
+    [Header("Dependency reference")]
     public ScriptableObject soReference;
 
 #if UNITY_EDITOR

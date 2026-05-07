@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,30 +14,54 @@ namespace ActionSystem.Editor
 {
     public static class ActionRegistryGenerator
     {
-        private const string OutputPath = "Assets/Scripts/Core/Action/ActionRegistry.g.cs";
+        public const string OutputPath = "Assets/Scripts/Core/Action/ActionRegistry.g.cs";
 
         public static void Generate()
         {
-            string content = BuildSource();
-            File.WriteAllText(OutputPath, content, Encoding.UTF8);
-            AssetDatabase.ImportAsset(OutputPath);
-            AssetDatabase.Refresh();
+            WriteRegistry(refreshAssetDatabase: true);
             Debug.Log($"[ActionRegistryGenerator] Generated: {OutputPath}");
         }
 
         public static void GenerateSilently()
         {
-            string content = BuildSource();
+            WriteRegistry(refreshAssetDatabase: false);
+        }
+
+        public static IReadOnlyList<string> RepairAndValidate()
+        {
+            var beforeGenerateErrors = ActionSystemValidator.Validate();
+            if (beforeGenerateErrors.Count > 0)
+                return beforeGenerateErrors;
+
+            Generate();
+            return ActionSystemValidator.Validate();
+        }
+
+        private static void WriteRegistry(bool refreshAssetDatabase)
+        {
+            string content;
+            try
+            {
+                content = BuildSource();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[ActionRegistryGenerator] Generation failed. Writing safe fallback registry.\n{e}");
+                content = BuildFallbackSource();
+            }
+
             File.WriteAllText(OutputPath, content, Encoding.UTF8);
             AssetDatabase.ImportAsset(OutputPath);
+
+            if (refreshAssetDatabase)
+                AssetDatabase.Refresh();
         }
 
         private static string BuildSource()
         {
-            var actionTypes = FindTypes(t => typeof(IBaseAction).IsAssignableFrom(t));
-            var handlerTypes = FindTypes(t => typeof(IActionMsgHandler).IsAssignableFrom(t));
-            var labelControllerTypes = FindTypes(t => typeof(IActionLabelController).IsAssignableFrom(t));
-            var stateTypes = FindTypes(t => typeof(IState).IsAssignableFrom(t));
+            var actionTypes = FindLiveScriptTypes(t => typeof(IBaseAction).IsAssignableFrom(t));
+            var labelControllerTypes = FindLiveScriptTypes(t => typeof(IActionLabelController).IsAssignableFrom(t));
+            var stateTypes = FindLiveScriptTypes(t => typeof(IState).IsAssignableFrom(t));
 
             var configs = LoadActionConfigs();
             var webCallableMethods = new List<ActionMethodEntry>();
@@ -46,10 +70,10 @@ namespace ActionSystem.Editor
 
             foreach (var config in configs)
             {
-                Type actionType = ResolveActionType(config, actionTypes);
+                var actionType = ResolveActionType(config, actionTypes);
                 if (actionType == null)
                 {
-                    Debug.LogWarning($"[ActionRegistryGenerator] Skip config without action type: {config.name}");
+                    Debug.LogWarning($"[ActionRegistryGenerator] Skip config without live action type: {config.name}");
                     continue;
                 }
 
@@ -59,25 +83,30 @@ namespace ActionSystem.Editor
                         continue;
 
                     if (!string.IsNullOrEmpty(bind.unityFuncName))
-                    {
                         AddActionMethod(webCallableMethods, actionType, bind.unityFuncName, "WebCallableMethods");
-                    }
 
                     if (bind.callBackEnable && !string.IsNullOrEmpty(bind.callBackFuncName))
-                    {
                         AddActionMethod(callbackMethods, actionType, bind.callBackFuncName, "CallbackMethods");
-                    }
                 }
 
                 foreach (var sub in config.subscribeBinds)
                 {
-                    if (string.IsNullOrEmpty(sub.localMethodName))
-                        continue;
-
-                    AddSubscribeMethod(subscribeMethods, actionType, sub.localMethodName);
+                    if (!string.IsNullOrEmpty(sub.localMethodName))
+                        AddSubscribeMethod(subscribeMethods, actionType, sub.localMethodName);
                 }
             }
 
+            return BuildRegistrySource(actionTypes, labelControllerTypes, stateTypes, webCallableMethods, callbackMethods, subscribeMethods);
+        }
+
+        private static string BuildRegistrySource(
+            IReadOnlyList<Type> actionTypes,
+            IReadOnlyList<Type> labelControllerTypes,
+            IReadOnlyList<Type> stateTypes,
+            IReadOnlyList<ActionMethodEntry> webCallableMethods,
+            IReadOnlyList<ActionMethodEntry> callbackMethods,
+            IReadOnlyList<SubscribeMethodEntry> subscribeMethods)
+        {
             var sb = new StringBuilder();
             sb.AppendLine("// <auto-generated>");
             sb.AppendLine("// Generated by ActionRegistryGenerator. Do not edit manually.");
@@ -91,7 +120,6 @@ namespace ActionSystem.Editor
             sb.AppendLine("public static partial class ActionRegistry");
             sb.AppendLine("{");
             AppendTypeList(sb, "ActionTypes", actionTypes);
-            AppendTypeList(sb, "HandlerTypes", handlerTypes);
             AppendTypeList(sb, "LabelControllerTypes", labelControllerTypes);
             AppendTypeList(sb, "StateTypes", stateTypes);
             AppendActionMethodDictionary(sb, "WebCallableMethods", webCallableMethods);
@@ -101,25 +129,36 @@ namespace ActionSystem.Editor
             return sb.ToString();
         }
 
-        private static List<Type> FindTypes(Func<Type, bool> predicate)
+        private static string BuildFallbackSource()
         {
-            return AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(GetLoadableTypes)
-                .Where(t => t.IsClass && !t.IsAbstract && predicate(t))
-                .OrderBy(t => t.FullName, StringComparer.Ordinal)
+            return BuildRegistrySource(
+                Array.Empty<Type>(),
+                Array.Empty<Type>(),
+                Array.Empty<Type>(),
+                Array.Empty<ActionMethodEntry>(),
+                Array.Empty<ActionMethodEntry>(),
+                Array.Empty<SubscribeMethodEntry>());
+        }
+
+        private static List<Type> FindLiveScriptTypes(Func<Type, bool> predicate)
+        {
+            return AssetDatabase.FindAssets("t:MonoScript")
+                .Select(AssetDatabase.GUIDToAssetPath)
+                .Where(IsRuntimeScriptPath)
+                .Select(AssetDatabase.LoadAssetAtPath<MonoScript>)
+                .Where(script => script != null)
+                .Select(script => script.GetClass())
+                .Where(type => type != null && type.IsClass && !type.IsAbstract && predicate(type))
+                .Distinct()
+                .OrderBy(type => type.FullName, StringComparer.Ordinal)
                 .ToList();
         }
 
-        private static IEnumerable<Type> GetLoadableTypes(Assembly assembly)
+        private static bool IsRuntimeScriptPath(string path)
         {
-            try
-            {
-                return assembly.GetTypes();
-            }
-            catch (ReflectionTypeLoadException e)
-            {
-                return e.Types.Where(t => t != null);
-            }
+            var normalized = path.Replace('\\', '/');
+            return !normalized.Contains("/Editor/", StringComparison.OrdinalIgnoreCase) &&
+                   !normalized.Contains("/Tests/Editor/", StringComparison.OrdinalIgnoreCase);
         }
 
         private static List<ActionConfigSO> LoadActionConfigs()
@@ -134,12 +173,25 @@ namespace ActionSystem.Editor
 
         private static Type ResolveActionType(ActionConfigSO config, IReadOnlyList<Type> actionTypes)
         {
+            var scriptType = GetTargetActionScriptType(config);
+            if (scriptType != null)
+            {
+                return actionTypes.Contains(scriptType) ? scriptType : null;
+            }
+
             if (string.IsNullOrEmpty(config.targetActionClassName))
                 return null;
 
             return actionTypes.FirstOrDefault(t =>
                 t.Name == config.targetActionClassName ||
                 t.FullName == config.targetActionClassName);
+        }
+
+        private static Type GetTargetActionScriptType(ActionConfigSO config)
+        {
+            var serializedConfig = new SerializedObject(config);
+            var targetScript = serializedConfig.FindProperty("targetActionScript");
+            return (targetScript?.objectReferenceValue as MonoScript)?.GetClass();
         }
 
         private static void AddActionMethod(List<ActionMethodEntry> entries, Type actionType, string methodName, string groupName)
@@ -211,8 +263,8 @@ namespace ActionSystem.Editor
             sb.AppendLine("    {");
             foreach (var entry in entries.OrderBy(e => e.ActionType.FullName, StringComparer.Ordinal).ThenBy(e => e.MethodName, StringComparer.Ordinal))
             {
-                string typeName = GetTypeName(entry.ActionType);
-                string args = entry.AcceptsData ? "data" : string.Empty;
+                var typeName = GetTypeName(entry.ActionType);
+                var args = entry.AcceptsData ? "data" : string.Empty;
                 sb.AppendLine($"        {{ (typeof({typeName}), nameof({typeName}.{entry.MethodName})), (action, data) => (({typeName})action).{entry.MethodName}({args}) }},");
             }
             sb.AppendLine("    };");
@@ -225,8 +277,8 @@ namespace ActionSystem.Editor
             sb.AppendLine("    {");
             foreach (var entry in entries.OrderBy(e => e.ActionType.FullName, StringComparer.Ordinal).ThenBy(e => e.MethodName, StringComparer.Ordinal))
             {
-                string typeName = GetTypeName(entry.ActionType);
-                string args = entry.ParameterKind switch
+                var typeName = GetTypeName(entry.ActionType);
+                var args = entry.ParameterKind switch
                 {
                     SubscribeParameterKind.Message => "message",
                     SubscribeParameterKind.Data => "message.Data",

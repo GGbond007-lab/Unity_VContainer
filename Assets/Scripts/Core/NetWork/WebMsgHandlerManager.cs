@@ -1,69 +1,98 @@
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 public class WebMsgHandlerManager
 {
-    private readonly Dictionary<string, IActionMsgHandler> _handlerDic = new();
-    private readonly ActionStack _actionStack;
+    public const string MessageType = "message";
 
-    public WebMsgHandlerManager(IEnumerable<IActionMsgHandler> handlers, ActionStack actionStack)
+    private readonly ActionDispatcher _dispatcher;
+    private readonly IMessageSender _messageSender;
+
+    public WebMsgHandlerManager(ActionDispatcher dispatcher, IMessageSender messageSender)
     {
-        _actionStack = actionStack;
-        var count = 0;
-        foreach (var handler in handlers)
-        {
-            _handlerDic.Add(handler.ActionName, handler);
-            Debug.Log($"[WebMsgHandlerManager] Registered handler: {handler.ActionName} -> {handler.GetType().Name}");
-            count++;
-        }
-        Debug.Log($"[WebMsgHandlerManager] Total handlers registered: {count}");
+        _dispatcher = dispatcher;
+        _messageSender = messageSender;
     }
 
-    public async UniTask ReceiveMessageFromWeb(string json)
+    public async UniTask<ActionExecutionResult> ReceiveMessageFromWeb(string json)
     {
+        if (string.IsNullOrWhiteSpace(json))
+        {
+            return SendError(ActionExecutionResult.Fail(
+                ActionErrorCode.InvalidJson,
+                "Message json is empty."));
+        }
+
+        WebMessageEnvelope envelope;
         try
         {
-            var msgEFD = JsonConvert.DeserializeObject<WebMessageEFD>(json);
-            if (!string.IsNullOrEmpty(msgEFD.actionName))
-            {
-                string actionName = msgEFD.actionName;
-                string funcName = msgEFD.funcName;
-                object data = msgEFD.data;
+            envelope = JsonConvert.DeserializeObject<WebMessageEnvelope>(json);
+        }
+        catch (JsonException e)
+        {
+            return SendError(ActionExecutionResult.Fail(
+                ActionErrorCode.InvalidJson,
+                e.Message));
+        }
 
-                Debug.Log($"接收[指定Action] action={actionName} func={funcName}");
+        if (envelope == null)
+        {
+            return SendError(ActionExecutionResult.Fail(
+                ActionErrorCode.InvalidJson,
+                "Message json could not be parsed."));
+        }
 
-                if (_handlerDic.TryGetValue(actionName, out var handler))
-                {
-                    await handler.Handle(funcName, data);
-                }
-                else
-                {
-                    Debug.LogWarning($"未找到Action处理器：{actionName}");
-                }
-                return;
-            }
+        if (!string.Equals(envelope.type, MessageType, System.StringComparison.Ordinal))
+        {
+            return SendError(ActionExecutionResult.Fail(
+                ActionErrorCode.InvalidMessageType,
+                $"Unsupported message type '{envelope.type}'. Expected '{MessageType}'.",
+                envelope.actionName,
+                envelope.funcName));
+        }
 
-            var msg = JsonConvert.DeserializeObject<WebMessageFD>(json);
-            string currentFunc = msg.funcName;
-            object currentData = msg.data;
-
-            Debug.Log($"接收[当前Action] func={currentFunc}");
-
-            var currentAction = _actionStack.GetCurrentAction();
-            if (currentAction is IBaseAction exec)
-            {
-                await exec.OnExecute(currentFunc, currentData);
-            }
-            else
-            {
-                Debug.LogWarning("当前没有正在运行的Action！");
-            }
+        ActionExecutionResult result;
+        try
+        {
+            result = await _dispatcher.Dispatch(envelope.actionName, envelope.funcName, envelope.data);
+        }
+        catch (JsonException e)
+        {
+            result = ActionExecutionResult.Fail(
+                ActionErrorCode.InvalidPayload,
+                e.Message,
+                envelope.actionName,
+                envelope.funcName);
         }
         catch (System.Exception e)
         {
-            Debug.LogError($"JSON 解析失败：{e.Message}\n{json}");
+            Debug.LogError($"[WebMsgHandlerManager] Dispatch failed: {e}");
+            result = ActionExecutionResult.Fail(
+                ActionErrorCode.ExecutionFailed,
+                e.Message,
+                envelope.actionName,
+                envelope.funcName);
         }
+
+        if (!result.Success)
+            _messageSender.SendError(result);
+
+        return result;
+    }
+
+    private ActionExecutionResult SendError(ActionExecutionResult result)
+    {
+        _messageSender.SendError(result);
+        return result;
+    }
+
+    private sealed class WebMessageEnvelope
+    {
+        public string type { get; set; }
+        public string actionName { get; set; }
+        public string funcName { get; set; }
+        public JToken data { get; set; }
     }
 }

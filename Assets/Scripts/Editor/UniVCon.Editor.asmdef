@@ -1,0 +1,22 @@
+{
+    "name": "UniVCon.Editor",
+    "rootNamespace": "UniVCon.Editor",
+    "references": [
+        "UniVCon.Runtime",
+        "UniTask",
+        "Unity.Addressables",
+        "Unity.Addressables.Editor",
+        "VContainer"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

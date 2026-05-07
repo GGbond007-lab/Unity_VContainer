@@ -17,13 +17,6 @@ public static partial class ActionRegistry
         typeof(YourAction3),
     };
 
-    public static readonly IReadOnlyList<Type> HandlerTypes = new[]
-    {
-        typeof(YourAction1MsgHandler),
-        typeof(YourAction2MsgHandler),
-        typeof(YourAction3MsgHandler),
-    };
-
     public static readonly IReadOnlyList<Type> LabelControllerTypes = new[]
     {
         typeof(YourActionLabelController),
@@ -31,10 +24,6 @@ public static partial class ActionRegistry
 
     public static readonly IReadOnlyList<Type> StateTypes = new[]
     {
-        typeof(VContainer.StateMachine.TaskCancelledState),
-        typeof(VContainer.StateMachine.TaskCompletedState),
-        typeof(VContainer.StateMachine.TaskFailedState),
-        typeof(VContainer.StateMachine.TaskRunningState),
         typeof(VContainer.StateMachine.TaskStartState),
     };
 

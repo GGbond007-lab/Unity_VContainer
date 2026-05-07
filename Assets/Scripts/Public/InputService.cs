@@ -1,80 +1,44 @@
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
 using VContainer.Unity;
 
 public class InputService : IInputService, ITickable
 {
-    private readonly string test1 = @"
+    private const string CreateYourAction1Labels = @"
 {
-    ""type"":""message"",
-    ""actionName"": ""你的Action1"",
-    ""funcName"": ""生成标签"",
+    ""type"": ""message"",
+    ""actionName"": ""YourAction1"",
+    ""funcName"": ""SpawnLabelList"",
     ""data"": [
-        {""identifyID"":""1"",""prefabKey"":""Lable"",""title"":""标签A"",""desc"":""标签A的描述"",""deviceName"":""标签A的设备名""},
-        {""identifyID"":""2"",""prefabKey"":""Lable"",""title"":""标签B"",""desc"":""标签B的描述"",""deviceName"":""标签B的设备名""}
+        {""identifyID"": ""1"", ""prefabKey"": ""Lable"", ""title"": ""Label A"", ""desc"": ""Running normally"", ""deviceName"": ""Device_001""},
+        {""identifyID"": ""2"", ""prefabKey"": ""Lable"", ""title"": ""Label B"", ""desc"": ""Standby mode"", ""deviceName"": ""Device_002""}
     ]
 }";
 
-    private readonly List<LabelData> testData1 = new List<LabelData>
-    {
-        new LabelData
-        {
-            identifyID = "1",
-            prefabKey = "Lable",
-            title = "测试设备A",
-            desc = "运行状态良好",
-            deviceName = "Device_001",
-        },
-        new LabelData
-        {
-            identifyID = "2",
-            prefabKey = "Lable",
-            title = "测试设备B",
-            desc = "待机模式",
-            deviceName = "Device_002",
-        }
-    };
+    private const string PingYourAction3 = @"
+{
+    ""type"": ""message"",
+    ""actionName"": ""YourAction3"",
+    ""funcName"": ""ExpPing"",
+    ""data"": {}
+}";
 
-    private readonly List<LabelData> testData2 = new List<LabelData>
-    {
-        new LabelData
-        {
-            identifyID = "3",
-            prefabKey = "Lable",
-            title = "测试设备C",
-            desc = "运行状态良好",
-            deviceName = "Device_001",
-        },
-        new LabelData
-        {
-            identifyID = "4",
-            prefabKey = "Lable",
-            title = "测试设备D",
-            desc = "待机模式",
-            deviceName = "Device_002",
-        }
-    };
+    private const string InvalidAction = @"
+{
+    ""type"": ""message"",
+    ""actionName"": ""MissingAction"",
+    ""funcName"": ""ExpPing"",
+    ""data"": {}
+}";
 
-    private readonly List<LabelData> testData3 = new List<LabelData>
-    {
-        new LabelData
-        {
-            identifyID = "5",
-            prefabKey = "LableNew",
-            title = "测试设备E",
-            desc = "运行状态良好",
-            deviceName = "Device_003",
-        },
-        new LabelData
-        {
-            identifyID = "6",
-            prefabKey = "LableNew",
-            title = "测试设备F",
-            desc = "待机模式",
-            deviceName = "Device_004",
-        }
-    };
+    private const string InvalidFunction = @"
+{
+    ""type"": ""message"",
+    ""actionName"": ""YourAction3"",
+    ""funcName"": ""MissingFunction"",
+    ""data"": {}
+}";
 
     private readonly WebMsgHandlerManager _msgManager;
     private readonly ActionStack _actionStack;
@@ -85,22 +49,38 @@ public class InputService : IInputService, ITickable
         _msgManager = msgManager;
         _actionStack = actionStack;
         _labelManager = labelManager;
-        Debug.Log("[InputService] constructed");
+        Debug.Log("[InputService] constructed. 1=YourAction1 labels, 2=YourAction3 ping, 8=invalid func, 9=invalid action, 0=pop.");
     }
 
-    public void Tick() => CheckInput();
+    public void Tick()
+    {
+        CheckInput();
+    }
 
     public void CheckInput()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            _msgManager.ReceiveMessageFromWeb(test1).Forget();
-        }
+            SendExample(CreateYourAction1Labels).Forget();
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+            SendExample(PingYourAction3).Forget();
+
+        if (Input.GetKeyDown(KeyCode.Alpha8))
+            SendExample(InvalidFunction).Forget();
+
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+            SendExample(InvalidAction).Forget();
 
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             _actionStack.Pop();
             _labelManager.DebugPoolStatus();
         }
+    }
+
+    private async UniTaskVoid SendExample(string json)
+    {
+        var result = await _msgManager.ReceiveMessageFromWeb(json);
+        Debug.Log($"[InputService Result] {JsonConvert.SerializeObject(WebErrorResponse.FromResult(result), Formatting.Indented)}");
     }
 }

@@ -29,51 +29,52 @@ public class YourAction1 : BaseAction
 
         if (LabelCtrl == null)
         {
-            Debug.LogError("LabelCtrl is not injected.");
+            Debug.LogError("[YourAction1] Label controller is not available.");
             return;
         }
 
         foreach (var itemData in dataList)
         {
-            var existLabel = LabelCtrl.TryGetLabel(itemData.identifyID);
-            if (existLabel != null)
+            var existingLabel = LabelCtrl.TryGetLabel(itemData.identifyID);
+            if (existingLabel != null)
             {
-                existLabel.SetData(itemData);
-                existLabel.Refresh();
+                existingLabel.SetData(itemData);
+                existingLabel.Refresh();
                 continue;
             }
 
             var prefab = await LabelManager.LoadLabelPrefab(itemData.prefabKey);
             var newLabel = LabelManager.CreateLabel(prefab, LabelCtrl.RootTransform);
+            if (newLabel == null)
+                continue;
 
             newLabel.SetData(itemData);
             newLabel.Refresh();
+
             if (newLabel is LabelItem labelItem)
             {
-                labelItem.SetClickEvent(() =>
-                {
-                    Debug.Log(itemData.deviceName);
-                });
+                labelItem.SetClickEvent(() => Debug.Log(itemData.deviceName));
             }
+
             LabelCtrl.AddLabel(newLabel);
         }
 
-        Debug.Log("SpawnLabelList executed.");
+        Debug.Log("[YourAction1] SpawnLabelList executed.");
     }
 
     public void OnCallBackSpawnLabelList()
     {
-        Debug.Log("OnCallBackSpawnLabelList executed.");
+        Debug.Log("[YourAction1] OnCallBackSpawnLabelList executed.");
     }
 
     public void PrintYourAction1()
     {
-        Debug.Log($"YourAction1 Print: {ActionId}");
+        Debug.Log($"[YourAction1] Print: {ActionId}");
     }
 
     public void ShowData(object data)
     {
-        Debug.Log($"YourAction1 data: {data}");
+        Debug.Log($"[YourAction1] Data: {data}");
     }
 
     [Preserve]
@@ -92,11 +93,10 @@ public class YourAction1 : BaseAction
         };
 
         MessageSender.SendActionMessage(
-            type: "message",
-            actionName: "你的Action1",
-            funcName: "生成标签",
-            data: labelList
-        );
+            type: WebMsgHandlerManager.MessageType,
+            actionName: "YourAction1",
+            funcName: "SpawnLabelList",
+            data: labelList);
 
         return UniTask.CompletedTask;
     }
@@ -104,15 +104,26 @@ public class YourAction1 : BaseAction
     public void SendUpdateLabel(List<LabelData> labelList)
     {
         MessageSender.SendCurrentMessage(
-            type: "message",
-            funcName: "更新标签",
-            data: labelList
-        );
+            type: WebMsgHandlerManager.MessageType,
+            funcName: "UpdateLabel",
+            data: labelList);
     }
 
     public override void OnInitialize()
     {
-        YourAction1SO yourAction1SO = GetSO<YourAction1SO>("ES1的SO");
-        Debug.Log($"SO data: Cube={yourAction1SO.Cube}, BoxCollider={yourAction1SO.BoxCollider}, Cube position={yourAction1SO.Cube.transform.position}");
+        var yourAction1SO = GetSO<YourAction1SO>();
+        if (yourAction1SO == null)
+        {
+            Debug.LogWarning("[YourAction1] YourAction1SO is not configured.");
+            return;
+        }
+
+        if (yourAction1SO.CubePrefab == null)
+        {
+            Debug.LogWarning("[YourAction1] Cube prefab is not configured.");
+            return;
+        }
+
+        Debug.Log($"[YourAction1] Configured cube prefab: {yourAction1SO.CubePrefab.name}");
     }
 }

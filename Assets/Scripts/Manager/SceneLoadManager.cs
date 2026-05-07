@@ -13,7 +13,7 @@ public class SceneLoadManager : ISceneLoadManager
 
     public async UniTask LoadSceneAsync(string sceneName)
     {
-        Debug.Log($"[SceneLoadManager] 开始加载：{sceneName}");
+        Debug.Log($"[SceneLoadManager] Loading scene: {sceneName}");
         await SceneManager.LoadSceneAsync(sceneName).ToUniTask();
 
         var callbackData = new SceneLoadResponse
@@ -21,7 +21,8 @@ public class SceneLoadManager : ISceneLoadManager
             sceneName = sceneName,
             status = "loaded"
         };
-        string json = _jsonSerializer.ToJson(callbackData);
-        Debug.Log($"[SceneLoadManager] 加载完成：{json}");
+
+        var json = _jsonSerializer.ToJson(callbackData);
+        Debug.Log($"[SceneLoadManager] Scene loaded: {json}");
     }
 }

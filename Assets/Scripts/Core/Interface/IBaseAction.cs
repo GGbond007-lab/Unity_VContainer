@@ -1,9 +1,14 @@
+using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 
-public interface IBaseAction
+public interface IBaseAction : IDisposable
 {
-    void OnInitialize(); // 事件初始化
-    void OnPushed();     // 入栈完成后调用
-    UniTask OnExecute(string funcKey, object data);    // 事件执行
-    void OnDestroy();    // 事件结束时调用
+    bool IsDestroyed { get; }
+    CancellationToken CancellationToken { get; }
+
+    void OnInitialize();
+    void OnPushed();
+    UniTask<ActionExecutionResult> OnExecute(string funcKey, object data);
+    void OnDestroy();
 }

@@ -1,50 +1,98 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class ActionBus : IActionBus
 {
-    private readonly Dictionary<Type, Delegate> _dic = new();
+    private readonly Dictionary<Type, List<Delegate>> _subscribers = new();
+    private readonly object _sync = new();
 
     public void Publish<T>(T message)
     {
-        Type type = typeof(T);
-        if (_dic.TryGetValue(type, out var del))
-            (del as Action<T>)?.Invoke(message);
+        List<Delegate> snapshot;
+        var type = typeof(T);
+
+        lock (_sync)
+        {
+            if (!_subscribers.TryGetValue(type, out var callbacks) || callbacks.Count == 0)
+                return;
+
+            snapshot = new List<Delegate>(callbacks);
+        }
+
+        foreach (var del in snapshot)
+        {
+            try
+            {
+                if (del is Action<T> callback)
+                    callback(message);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[ActionBus] Subscriber for {type.Name} failed: {e}");
+            }
+        }
     }
 
     public IDisposable Subscribe<T>(Action<T> callback)
     {
-        Type type = typeof(T);
-        if (!_dic.ContainsKey(type))
-            _dic[type] = callback;
-        else
-            _dic[type] = Delegate.Combine(_dic[type], callback);
+        if (callback == null)
+            throw new ArgumentNullException(nameof(callback));
 
-        return new UnsubscribeDelegate<T>(this, callback);
+        var type = typeof(T);
+        lock (_sync)
+        {
+            if (!_subscribers.TryGetValue(type, out var callbacks))
+            {
+                callbacks = new List<Delegate>();
+                _subscribers[type] = callbacks;
+            }
+
+            if (!callbacks.Contains(callback))
+                callbacks.Add(callback);
+        }
+
+        return new Subscription<T>(this, callback);
     }
 
     public void UnSubscribe<T>(Action<T> callback)
     {
-        Type type = typeof(T);
-        if (_dic.ContainsKey(type))
-            _dic[type] = Delegate.Remove(_dic[type], callback);
-    }
-}
+        if (callback == null)
+            return;
 
-// 自动取消订阅
-public class UnsubscribeDelegate<T> : IDisposable
-{
-    private IActionBus _bus;
-    private Action<T> _callback;
+        var type = typeof(T);
+        lock (_sync)
+        {
+            if (!_subscribers.TryGetValue(type, out var callbacks))
+                return;
 
-    public UnsubscribeDelegate(IActionBus bus, Action<T> callback)
-    {
-        _bus = bus;
-        _callback = callback;
+            callbacks.Remove(callback);
+            if (callbacks.Count == 0)
+                _subscribers.Remove(type);
+        }
     }
 
-    public void Dispose()
+    private sealed class Subscription<T> : IDisposable
     {
-        _bus?.UnSubscribe(_callback);
+        private ActionBus _bus;
+        private Action<T> _callback;
+
+        public Subscription(ActionBus bus, Action<T> callback)
+        {
+            _bus = bus;
+            _callback = callback;
+        }
+
+        public void Dispose()
+        {
+            var bus = _bus;
+            var callback = _callback;
+            if (bus == null || callback == null)
+                return;
+
+            _bus = null;
+            _callback = null;
+            bus.UnSubscribe(callback);
+        }
     }
 }

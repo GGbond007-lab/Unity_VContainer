@@ -1,4 +1,4 @@
-﻿[System.Serializable]
+[System.Serializable]
 public class WebMessageEFD//定义前端格式的消息结构，包含事件名、方法名和数据
 {
     public string type;

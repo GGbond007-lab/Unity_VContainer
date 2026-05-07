@@ -49,11 +49,23 @@
     <Analyzer Include="D:\Program Files\Unity\6000.3.6f1\Editor\Data\Tools\BuildPipeline\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Editor\ActionRegistryMenu.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Editor\ReadmeEditor.cs" />
     <Compile Include="Assets\Scripts\Editor\ActionRegistryGenerator.cs" />
+    <Compile Include="Assets\Scripts\Tests\Editor\ActionStackTests.cs" />
+    <Compile Include="Assets\Scripts\Tests\Editor\ActionDispatcherTests.cs" />
     <Compile Include="Assets\Scripts\Editor\ActionCreator.cs" />
+    <Compile Include="Assets\Scripts\Tests\Editor\ActionBusTests.cs" />
+    <Compile Include="Assets\Scripts\Tests\Editor\ActionConfigProviderTests.cs" />
+    <Compile Include="Assets\Scripts\Tests\Editor\ActionSystemValidatorTests.cs" />
+    <Compile Include="Assets\Scripts\Editor\ActionSystemValidator.cs" />
     <Compile Include="Assets\Scripts\Editor\ActionConfigSOEditor.cs" />
+    <Compile Include="Assets\Scripts\Tests\Editor\WebDataConverterTests.cs" />
     <Compile Include="Assets\Scripts\Editor\ActionRegistryAutoGenerateHook.cs" />
+    <Compile Include="Assets\Scripts\Editor\ActionRegistryAssetPostprocessor.cs" />
+    <Compile Include="Assets\Scripts\Editor\ActionSystemValidatorWindow.cs" />
+    <Compile Include="Assets\Scripts\Tests\Editor\TestAction.cs" />
+    <Compile Include="Assets\Scripts\Tests\Editor\WebMsgHandlerManagerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

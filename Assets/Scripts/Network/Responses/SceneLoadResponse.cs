@@ -1,4 +1,4 @@
-﻿// WebApi/Responses/SceneLoadResponse.cs
+// WebApi/Responses/SceneLoadResponse.cs
 using System;
 
 [Serializable]

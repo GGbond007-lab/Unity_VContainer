@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
@@ -7,22 +8,24 @@ using VContainer;
 public abstract class BaseAction : IBaseAction
 {
     public string ActionId { get; protected set; }
+    public bool IsDestroyed { get; private set; }
+    public CancellationToken CancellationToken => _destroyCancellation.Token;
 
     [Inject] protected IActionBus ActionBus { get; private set; }
     [Inject] protected ILabelManager LabelManager { get; private set; }
     [Inject] protected IMessageSender MessageSender { get; private set; }
     [Inject] protected ActionStack ActionStack { get; private set; }
     [Inject] private WebDataConverter DataConverter { get; set; }
+    [Inject] private IActionConfigProvider ConfigProvider { get; set; }
 
     protected ActionConfigSO Config { get; private set; }
-
     public IActionLabelController LabelCtrl { get; protected set; }
 
     protected Dictionary<string, ScriptableObject> SOContainer { get; } = new();
 
     private readonly Dictionary<string, MethodBinding> _methodMap = new();
     private readonly List<IDisposable> _subscribeDisposables = new();
-
+    private readonly CancellationTokenSource _destroyCancellation = new();
     private bool _initialized;
 
     protected BaseAction()
@@ -30,27 +33,72 @@ public abstract class BaseAction : IBaseAction
         ActionId = Guid.NewGuid().ToString("N");
     }
 
-    public virtual async UniTask OnExecute(string webFuncName, object data)
+    public virtual async UniTask<ActionExecutionResult> OnExecute(string webFuncName, object data)
     {
-        Debug.Log($"【调用】OnExecute: webFuncName = {webFuncName}");
+        if (IsDestroyed)
+        {
+            return ActionExecutionResult.Fail(
+                ActionErrorCode.ActionDestroyed,
+                $"{GetType().Name} is already destroyed.",
+                GetConfigActionName(),
+                webFuncName);
+        }
+
+        if (CancellationToken.IsCancellationRequested)
+        {
+            return ActionExecutionResult.Fail(
+                ActionErrorCode.ActionCancelled,
+                $"{GetType().Name} is cancelled.",
+                GetConfigActionName(),
+                webFuncName);
+        }
 
         if (!_methodMap.TryGetValue(webFuncName, out var binding))
         {
-            Debug.LogError($"【失败】找不到 webFuncName: {webFuncName}");
-            return;
+            return ActionExecutionResult.Fail(
+                ActionErrorCode.FunctionNotFound,
+                $"Function '{webFuncName}' is not configured for {GetType().Name}.",
+                GetConfigActionName(),
+                webFuncName);
         }
 
-        Debug.Log($"【找到映射】执行本地方法: {binding.UnityMethodName}");
-        await binding.WebCallable(this, data);
-
-        var msg = new ActionMethodExecutedMessage(this, binding.UnityMethodName, data);
-        Debug.Log($"【发布消息】Action: {GetType().Name} 方法: {binding.UnityMethodName}");
-        ActionBus.Publish(msg);
-
-        if (binding.Callback != null)
+        try
         {
-            Debug.Log($"【执行回调】{GetType().Name}.{binding.CallbackMethodName}");
-            await binding.Callback(this, data);
+            await binding.WebCallable(this, data).AttachExternalCancellation(CancellationToken);
+
+            ActionBus.Publish(new ActionMethodExecutedMessage(this, binding.UnityMethodName, data));
+
+            if (binding.Callback != null)
+            {
+                await binding.Callback(this, data).AttachExternalCancellation(CancellationToken);
+            }
+
+            return ActionExecutionResult.Ok(GetConfigActionName(), webFuncName);
+        }
+        catch (OperationCanceledException)
+        {
+            return ActionExecutionResult.Fail(
+                ActionErrorCode.ActionCancelled,
+                $"{GetType().Name}.{binding.UnityMethodName} was cancelled.",
+                GetConfigActionName(),
+                webFuncName);
+        }
+        catch (PayloadConversionException e)
+        {
+            return ActionExecutionResult.Fail(
+                ActionErrorCode.InvalidPayload,
+                e.Message,
+                GetConfigActionName(),
+                webFuncName);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[ActionExecution] {GetType().Name}.{binding.UnityMethodName} failed: {e}");
+            return ActionExecutionResult.Fail(
+                ActionErrorCode.ExecutionFailed,
+                e.Message,
+                GetConfigActionName(),
+                webFuncName);
         }
     }
 
@@ -60,17 +108,14 @@ public abstract class BaseAction : IBaseAction
         if (_initialized) return;
         _initialized = true;
 
-        Type selfType = GetType();
-
-        Config = ActionConfigProvider.GetConfigByTargetAction(selfType);
+        var selfType = GetType();
+        Config = ConfigProvider.GetConfigByTargetAction(selfType);
 
         if (Config == null)
         {
-            Debug.LogError($"【错误】{selfType.Name} 没有找到绑定的配置！请检查 SO 的 targetActionScript");
+            Debug.LogError($"[Action] {selfType.Name} has no ActionConfigSO.");
             return;
         }
-
-        Debug.Log($"【成功】{selfType.Name} 找到自己的配置：{Config.name}");
 
         BuildMethodBindingsFromConfig();
         AutoSubscribeFromConfig();
@@ -80,139 +125,104 @@ public abstract class BaseAction : IBaseAction
 
     protected T ConvertData<T>(object data)
     {
-        return DataConverter.ConvertData<T>(data);
+        try
+        {
+            return DataConverter.ConvertData<T>(data);
+        }
+        catch (Exception e)
+        {
+            throw new PayloadConversionException($"Invalid payload for {typeof(T).Name}: {e.Message}", e);
+        }
     }
 
     protected bool TryConvertData<T>(object data, out T result)
     {
-        return DataConverter.TryConvertData(data, out result);
+        try
+        {
+            result = ConvertData<T>(data);
+            return true;
+        }
+        catch (PayloadConversionException e)
+        {
+            Debug.LogError(e.Message);
+            result = default;
+            return false;
+        }
     }
 
     protected T GetSO<T>() where T : ScriptableObject
     {
-        var key = typeof(T).Name;
-        if (SOContainer.TryGetValue(key, out var so))
-        {
-            return so as T;
-        }
-        return null;
+        return GetSO<T>(typeof(T).Name);
     }
 
     protected T GetSO<T>(string key) where T : ScriptableObject
     {
-        if (SOContainer.TryGetValue(key, out var so))
-        {
-            return so as T;
-        }
-        return null;
+        return SOContainer.TryGetValue(key, out var so) ? so as T : null;
     }
 
     protected void LoadSO<T>() where T : ScriptableObject
     {
-        var so = ActionConfigProvider.GetScriptableObjectByType(typeof(T)) as T;
+        var so = ConfigProvider.GetScriptableObjectByType(typeof(T)) as T;
         if (so != null)
         {
-            var key = typeof(T).Name;
-            SOContainer[key] = so;
-            Debug.Log($"【加载SO】{GetType().Name} 加载了 {typeof(T).Name}: {so.name}");
+            SOContainer[typeof(T).Name] = so;
         }
         else
         {
-            Debug.LogWarning($"【警告】{GetType().Name} 尝试加载 {typeof(T).Name} 但未找到SO");
+            Debug.LogWarning($"[Action] {GetType().Name} could not load SO {typeof(T).Name}.");
         }
     }
 
     private void LoadSOsFromConfig()
     {
-        if (Config == null || Config.requiredSOs == null || Config.requiredSOs.Count == 0)
-        {
-            Debug.Log($"【跳过】{GetType().Name} 没有配置需要的ScriptableObject");
-            return;
-        }
+        if (Config?.requiredSOs == null) return;
 
         foreach (var soConfig in Config.requiredSOs)
         {
-            if (soConfig.soReference == null)
-            {
-                Debug.LogWarning($"【警告】{GetType().Name} 配置了一个空的ScriptableObject引用（key: {soConfig.typeName}）");
+            if (soConfig.soReference == null || string.IsNullOrEmpty(soConfig.typeName))
                 continue;
-            }
 
-            if (string.IsNullOrEmpty(soConfig.typeName))
+            if (!SOContainer.ContainsKey(soConfig.typeName))
             {
-                Debug.LogWarning($"【警告】{GetType().Name} 配置的ScriptableObject没有设置字典key");
-                continue;
-            }
-
-            string key = soConfig.typeName;
-            if (!SOContainer.ContainsKey(key))
-            {
-                SOContainer[key] = soConfig.soReference;
-                Debug.Log($"【自动加载SO】{GetType().Name} 加载了 key='{key}': {soConfig.soReference.name}");
-            }
-            else
-            {
-                Debug.LogWarning($"【警告】{GetType().Name} 重复配置了相同的key: '{key}'");
+                SOContainer[soConfig.typeName] = soConfig.soReference;
             }
         }
     }
 
     private void NotifyLetBackIfNeeded()
     {
-        if (Config == null || !Config.isLetBack) return;
-
-        if (ActionStack.IsAtBottom(this))
-        {
-            Debug.Log($"【跳过返回通知】{GetType().Name} 处于栈底，不显示返回按钮");
+        if (Config == null || !Config.isLetBack || ActionStack.IsAtBottom(this))
             return;
-        }
 
-        if (MessageSender == null)
-        {
-            Debug.LogWarning($"【警告】{GetType().Name} 需要发送返回通知但 MessageSender 为 null");
-            return;
-        }
-
-        MessageSender.SendActionMessage("message", "DefaultAction", "showBackButton", new { });
-        Debug.Log($"【发送返回通知】{GetType().Name} 允许返回，已通知前端显示返回按钮");
+        MessageSender?.SendActionMessage("message", "DefaultAction", "showBackButton", new { });
     }
 
     private void AutoSubscribeFromConfig()
     {
-        if (Config == null) return;
-        if (Config.subscribeBinds == null || Config.subscribeBinds.Count == 0) return;
+        if (Config?.subscribeBinds == null) return;
 
         foreach (var sub in Config.subscribeBinds)
         {
-            if (string.IsNullOrEmpty(sub.targetActionClassName)
-             || string.IsNullOrEmpty(sub.methodNameInTargetAction)
-             || string.IsNullOrEmpty(sub.localMethodName)) continue;
-
-            Type targetActionType = ActionRegistry.GetActionType(sub.targetActionClassName);
-            if (targetActionType == null)
+            if (string.IsNullOrEmpty(sub.targetActionClassName) ||
+                string.IsNullOrEmpty(sub.methodNameInTargetAction) ||
+                string.IsNullOrEmpty(sub.localMethodName))
             {
-                Debug.LogWarning($"【跳过订阅】未在 {nameof(ActionRegistry)} 中找到目标Action：{sub.targetActionClassName}");
                 continue;
             }
+
+            var targetActionType = ActionRegistry.GetActionType(sub.targetActionClassName);
+            if (targetActionType == null)
+                continue;
 
             if (!ActionRegistry.TryGetSubscribeMethod(GetType(), sub.localMethodName, out var localMethod))
-            {
-                Debug.LogWarning($"【跳过订阅】{GetType().Name}.{sub.localMethodName} 未加入 {nameof(ActionRegistry)} 的 SubscribeMethods");
                 continue;
-            }
-
-            Debug.Log($"【订阅成功】监听: {targetActionType.Name}.{sub.methodNameInTargetAction} -> 执行: {sub.localMethodName}");
 
             var disposable = ActionBus.Subscribe<ActionMethodExecutedMessage>(msg =>
             {
-                bool matchAction = msg.Action.GetType() == targetActionType;
-                bool matchMethod = msg.MethodName == sub.methodNameInTargetAction;
+                if (IsDestroyed || msg.Action.GetType() != targetActionType || msg.MethodName != sub.methodNameInTargetAction)
+                    return;
 
-                if (matchAction && matchMethod)
-                {
-                    Debug.Log($"【触发】{targetActionType.Name}.{msg.MethodName} -> 执行 {sub.localMethodName}");
-                    localMethod(this, msg).Forget();
-                }
+                localMethod(this, msg).Forget();
             });
 
             _subscribeDisposables.Add(disposable);
@@ -228,38 +238,30 @@ public abstract class BaseAction : IBaseAction
 
         foreach (var bind in Config.methodBinds)
         {
-            if (!bind.enableWebFunc)
+            if (!bind.enableWebFunc ||
+                string.IsNullOrEmpty(bind.webFuncName) ||
+                string.IsNullOrEmpty(bind.unityFuncName))
             {
-                Debug.Log($"【跳过】{bind.webFuncName} 已被 enableWebFunc 关闭");
                 continue;
             }
 
-            if (string.IsNullOrEmpty(bind.webFuncName) || string.IsNullOrEmpty(bind.unityFuncName))
-                continue;
-
             if (!ActionRegistry.TryGetWebCallableMethod(type, bind.unityFuncName, out var webCallable))
             {
-                Debug.LogWarning($"【跳过方法绑定】{type.Name}.{bind.unityFuncName} 未加入 {nameof(ActionRegistry)} 的 WebCallableMethods");
+                Debug.LogWarning($"[Action] {type.Name}.{bind.unityFuncName} is not in ActionRegistry.");
                 continue;
             }
 
             ActionRegistry.ActionMethodDelegate callback = null;
             if (bind.callBackEnable && !string.IsNullOrEmpty(bind.callBackFuncName))
             {
-                if (!ActionRegistry.TryGetCallbackMethod(type, bind.callBackFuncName, out callback))
-                {
-                    Debug.LogWarning($"【跳过回调绑定】{type.Name}.{bind.callBackFuncName} 未加入 {nameof(ActionRegistry)} 的 CallbackMethods");
-                }
+                ActionRegistry.TryGetCallbackMethod(type, bind.callBackFuncName, out callback);
             }
 
             _methodMap[bind.webFuncName] = new MethodBinding(
                 bind.unityFuncName,
                 webCallable,
                 bind.callBackFuncName,
-                callback
-            );
-
-            Debug.Log($"【方法绑定】{bind.webFuncName} -> {bind.unityFuncName}");
+                callback);
         }
     }
 
@@ -272,7 +274,15 @@ public abstract class BaseAction : IBaseAction
 
     public virtual void OnDestroy()
     {
-        foreach (var d in _subscribeDisposables) d?.Dispose();
+        if (IsDestroyed) return;
+
+        IsDestroyed = true;
+        _destroyCancellation.Cancel();
+
+        foreach (var d in _subscribeDisposables)
+        {
+            d?.Dispose();
+        }
         _subscribeDisposables.Clear();
 
         if (LabelCtrl != null)
@@ -281,9 +291,21 @@ public abstract class BaseAction : IBaseAction
             LabelCtrl.Destroy();
             LabelCtrl = null;
         }
+
+        _destroyCancellation.Dispose();
     }
 
     public virtual void OnInitialize() { }
+
+    public void Dispose()
+    {
+        OnDestroy();
+    }
+
+    private string GetConfigActionName()
+    {
+        return string.IsNullOrEmpty(Config?.actionName) ? GetType().Name : Config.actionName;
+    }
 
     private sealed class MethodBinding
     {
@@ -317,5 +339,13 @@ public class ActionMethodExecutedMessage
         Action = action;
         MethodName = methodName;
         Data = data;
+    }
+}
+
+public sealed class PayloadConversionException : Exception
+{
+    public PayloadConversionException(string message, Exception innerException)
+        : base(message, innerException)
+    {
     }
 }
