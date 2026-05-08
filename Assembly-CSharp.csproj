@@ -1350,8 +1350,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="UniVCon.Runtime.csproj" />
     <ProjectReference Include="UniVCon.Editor.csproj" />
+    <ProjectReference Include="UniVCon.Runtime.csproj" />
   </ItemGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
   <ItemGroup>

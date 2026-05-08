@@ -49,14 +49,14 @@
     <Analyzer Include="D:\Program Files\Unity\6000.3.6f1\Editor\Data\Tools\BuildPipeline\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Editor\ActionRegistryMenu.cs" />
-    <Compile Include="Assets\Scripts\Editor\ActionRegistryGenerator.cs" />
-    <Compile Include="Assets\Scripts\Editor\ActionCreator.cs" />
-    <Compile Include="Assets\Scripts\Editor\ActionSystemValidator.cs" />
-    <Compile Include="Assets\Scripts\Editor\ActionConfigSOEditor.cs" />
-    <Compile Include="Assets\Scripts\Editor\ActionRegistryAutoGenerateHook.cs" />
-    <Compile Include="Assets\Scripts\Editor\ActionRegistryAssetPostprocessor.cs" />
-    <Compile Include="Assets\Scripts\Editor\ActionSystemValidatorWindow.cs" />
+    <Compile Include="Assets\Scripts\Editor\ActionSystem\ActionSystemValidator.cs" />
+    <Compile Include="Assets\Scripts\Editor\ActionSystem\ActionRegistryGenerator.cs" />
+    <Compile Include="Assets\Scripts\Editor\ActionSystem\ActionConfigSOEditor.cs" />
+    <Compile Include="Assets\Scripts\Editor\ActionSystem\ActionRegistryAutoGenerateHook.cs" />
+    <Compile Include="Assets\Scripts\Editor\ActionSystem\ActionRegistryAssetPostprocessor.cs" />
+    <Compile Include="Assets\Scripts\Editor\ActionSystem\ActionSystemValidatorWindow.cs" />
+    <Compile Include="Assets\Scripts\Editor\ActionSystem\ActionRegistryMenu.cs" />
+    <Compile Include="Assets\Scripts\Editor\ActionSystem\ActionCreator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Scripts\Editor\UniVCon.Editor.asmdef" />

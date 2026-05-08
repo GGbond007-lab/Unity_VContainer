@@ -1,15 +1,16 @@
-#if UNITY_EDITOR
-using ActionSystem.Editor;
-using NUnit.Framework;
-
-public sealed class ActionSystemValidatorTests
+namespace UniVCon.Tests
 {
-    [Test]
-    public void ValidatorFindsNoIssuesInCurrentConfigs()
-    {
-        var errors = ActionSystemValidator.Validate();
+    using NUnit.Framework;
+    using UniVCon.Editor;
 
-        Assert.IsEmpty(errors);
+    public sealed class ActionSystemValidatorTests
+    {
+        [Test]
+        public void ValidatorFindsNoIssuesInCurrentConfigs()
+        {
+            var errors = ActionSystemValidator.Validate();
+
+            Assert.IsEmpty(errors);
+        }
     }
 }
-#endif
