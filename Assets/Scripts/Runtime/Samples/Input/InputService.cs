@@ -1,4 +1,4 @@
-namespace UniVCon
+﻿namespace UniVCon
 {
     using Cysharp.Threading.Tasks;
     using Newtonsoft.Json;
@@ -82,7 +82,7 @@ namespace UniVCon
 
         private async UniTaskVoid SendExample(string json)
         {
-            var result = await _msgManager.ReceiveMessageFromWeb(json);
+            var result = await _msgManager.ReceiveMessageFromWeb(json) ;
             Debug.Log($"[InputService Result] {JsonConvert.SerializeObject(WebErrorResponse.FromResult(result), Formatting.Indented)}");
         }
     }
