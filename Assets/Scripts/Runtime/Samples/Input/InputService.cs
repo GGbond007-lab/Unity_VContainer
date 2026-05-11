@@ -9,7 +9,7 @@
     {
         private const string CreateYourAction1Labels = @"
 {
-    ""type"": ""message"",
+    ""type"": ""message"", 
     ""actionName"": ""YourAction1"",
     ""funcName"": ""SpawnLabelList"",
     ""data"": [
